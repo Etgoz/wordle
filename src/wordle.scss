@@ -14,37 +14,49 @@ html {
 	font-size: 1em;
 	overflow-x: hidden;
 	box-sizing: border-box;
+	max-height: 100vh;
 }
 
 body {
 	text-align: center;
 	height: 100vh;
 	width: 100vw;
+}
+
+header {
+	margin-bottom: 2rem;
+	background-color: antiquewhite;
 
 	h1 {
-		font-size: 4rem;
-		margin: 1rem 0;
+		font-size: 3rem;
+		margin: 0;
 	}
 }
 
 .input-zone {
 	@include center;
-	margin-bottom: 3rem;
+	margin-bottom: 2rem;
 	height: 60%;
 
-	.grid-container {
-		display: grid;
-		grid-template-columns: repeat(5, 1fr);
-		grid-template-rows: repeat(6, 1fr);
+	.input-grid {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
 		gap: 0.7rem;
 	}
+
+	.row-container {
+		@include center;
+		gap: 0.7rem;
+	}
+
 	.input {
 		@include center;
-		width: 4rem;
-		height: 4rem;
+		width: 3rem;
+		height: 3rem;
 		border: 4px solid grey;
 		border-radius: 8px;
-		font-size: 4rem;
+		font-size: 3rem;
 	}
 
 	.input:focus {
@@ -75,11 +87,11 @@ body {
 
 	button {
 		@include center;
-		height: 3.5rem;
-		width: 3.5rem;
+		height: 3rem;
+		width: 3rem;
 		border: 3px solid grey;
 		border-radius: 8px;
-		font-size: 3rem;
+		font-size: 2.5rem;
 	}
 }
 
