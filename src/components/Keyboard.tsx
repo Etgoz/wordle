@@ -1,11 +1,26 @@
-import React from "react";
+import React, { useContext } from "react";
+import { AppContext } from "../context/AppContext";
 
 export function Keyboard() {
+	const { currentCell, refMatrix, setRefMatrix, nextCell, prevCell } =
+		useContext(AppContext);
+	const { curRow, curCell } = currentCell;
+
 	function handleClick(ev: any) {
-		console.log(ev.target.innerHTML);
+		const newMatrix = [...refMatrix];
+		newMatrix[curRow][curCell] = ev.target.innerText;
+		setRefMatrix(newMatrix);
+		nextCell(currentCell);
+		console.log(refMatrix);
 	}
 
-	function handleDelete(ev: React.MouseEvent<HTMLButtonElement>) {}
+	function handleDelete(ev: any) {
+		const newMatrix = [...refMatrix];
+		newMatrix[curRow][curCell] = "";
+		setRefMatrix(newMatrix);
+		prevCell(currentCell);
+		console.log(refMatrix);
+	}
 
 	return (
 		<>

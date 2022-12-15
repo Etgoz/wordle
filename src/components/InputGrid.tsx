@@ -1,16 +1,16 @@
 import React from "react";
 import { InputRow } from "./InputRow";
-import { useContext } from "react";
-import { CurrentCellContex } from "../context/CurrentCellContext";
 
 export function InputGrid(): JSX.Element {
 	const rowsList: number[] = [0, 1, 2, 3, 4, 5];
 
-	return (
+	const grid = (
 		<div className="input-grid">
 			{rowsList.map((i) => (
 				<InputRow rowNumber={i} key={i} />
 			))}
 		</div>
 	);
+
+	return grid;
 }

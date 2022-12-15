@@ -1,5 +1,5 @@
 import React from "react";
-
+import { InputCell } from "./InputCell";
 type RowProps = {
 	rowNumber: number;
 };
@@ -9,9 +9,15 @@ export function InputRow({ rowNumber }: RowProps): JSX.Element {
 
 	const row: JSX.Element = (
 		<div className="row-container">
-			{cellList.map((i) => (
-				<div className="input" key={`${i}-${rowNumber}`} tabIndex={0}></div>
-			))}
+			{cellList.map((i) => {
+				return (
+					<InputCell
+						rowNumber={rowNumber}
+						cellNumber={i}
+						key={`${rowNumber}, ${i}`}
+					/>
+				);
+			})}
 		</div>
 	);
 
