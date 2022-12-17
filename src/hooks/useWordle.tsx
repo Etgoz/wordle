@@ -63,6 +63,10 @@ export function useWordle() {
 		prevCell(currentCell);
 	}
 
+	function containsHeb(str: string): boolean {
+		return /[א-ת]/.test(str);
+	}
+
 	return {
 		currentCell,
 		setCurrentCell,
@@ -71,5 +75,6 @@ export function useWordle() {
 		nextCell,
 		prevCell,
 		handleDelete,
+		containsHeb,
 	};
 }

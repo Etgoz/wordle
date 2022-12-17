@@ -4,12 +4,14 @@ import { InputGrid } from "./InputGrid";
 import { Keyboard } from "./Keyboard";
 
 export function WordleApp(): JSX.Element {
-	const { currentCell, refMatrix, handleDelete, setRefMatrix, nextCell } =
-		useContext(AppContext);
-
-	function containsHeb(str: string): boolean {
-		return /[\u0590-\u05FF]/.test(str);
-	}
+	const {
+		currentCell,
+		refMatrix,
+		handleDelete,
+		setRefMatrix,
+		nextCell,
+		containsHeb,
+	} = useContext(AppContext);
 
 	function handleKeyDown(ev: KeyboardEvent<HTMLDivElement>) {
 		let key = ev.key;
