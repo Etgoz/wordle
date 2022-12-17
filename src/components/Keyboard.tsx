@@ -2,24 +2,38 @@ import React, { useContext } from "react";
 import { AppContext } from "../context/AppContext";
 
 export function Keyboard() {
-	const { currentCell, refMatrix, setRefMatrix, nextCell, prevCell } =
+	const { currentCell, refMatrix, setRefMatrix, nextCell, handleDelete } =
 		useContext(AppContext);
 	const { curRow, curCell } = currentCell;
 
 	function handleClick(ev: any) {
+		let letter = ev.target.innerText;
+		if (curCell === 4 && "כמנצפ".includes(letter)) {
+			switch (letter) {
+				case "כ":
+					letter = "ך";
+					break;
+				case "מ":
+					letter = "ם";
+					break;
+				case "נ":
+					letter = "ן";
+					break;
+				case "פ":
+					letter = "ף";
+					break;
+				case "צ":
+					letter = "ץ";
+					break;
+			}
+		}
 		const newMatrix = [...refMatrix];
-		newMatrix[curRow][curCell] = ev.target.innerText;
+		newMatrix[curRow][curCell] = letter;
 		setRefMatrix(newMatrix);
 		nextCell(currentCell);
-		console.log(refMatrix);
-	}
-
-	function handleDelete(ev: any) {
-		const newMatrix = [...refMatrix];
-		newMatrix[curRow][curCell] = "";
-		setRefMatrix(newMatrix);
-		prevCell(currentCell);
-		console.log(refMatrix);
+		if (curCell === 4) {
+			setTimeout(() => alert("done"), 100);
+		}
 	}
 
 	return (
@@ -28,7 +42,11 @@ export function Keyboard() {
 				{/* <button type="button" id="submit">
 						שלח
 					</button> */}
-				<button onClick={handleDelete} type="button" id="del">
+				<button
+					onClick={() => handleDelete(currentCell, refMatrix)}
+					type="button"
+					id="del"
+				>
 					del
 				</button>
 				<button onClick={handleClick} type="button">

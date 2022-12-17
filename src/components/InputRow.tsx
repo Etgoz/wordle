@@ -7,7 +7,7 @@ type RowProps = {
 export function InputRow({ rowNumber }: RowProps): JSX.Element {
 	const cellList: number[] = [0, 1, 2, 3, 4];
 
-	const row: JSX.Element = (
+	return (
 		<div className="row-container">
 			{cellList.map((i) => {
 				return (
@@ -20,6 +20,4 @@ export function InputRow({ rowNumber }: RowProps): JSX.Element {
 			})}
 		</div>
 	);
-
-	return row;
 }

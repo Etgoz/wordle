@@ -6,13 +6,13 @@ interface currentCellState {
 }
 
 export function useWordle() {
-	const [currentCell, setCurrentCell] = useState<currentCellState | null>({
+	const [currentCell, setCurrentCell] = useState<currentCellState>({
 		curRow: 0,
 		curCell: 0,
 	});
 
-	function nextCell(currentCellState: currentCellState): void {
-		const { curRow, curCell } = currentCellState;
+	function nextCell(currentCell: currentCellState): void {
+		const { curRow, curCell } = currentCell;
 		let newCurRow = curRow;
 		let newCurCell = curCell;
 		if (curCell < 4) {
@@ -26,8 +26,8 @@ export function useWordle() {
 		setCurrentCell({ curRow: newCurRow, curCell: newCurCell });
 	}
 
-	function prevCell(currentCellState: currentCellState): void {
-		const { curRow, curCell } = currentCellState;
+	function prevCell(currentCell: currentCellState): void {
+		const { curRow, curCell } = currentCell;
 		let newCurRow = curRow;
 		let newCurCell = curCell;
 		if (curCell > 0) {
@@ -50,7 +50,18 @@ export function useWordle() {
 		["", "", "", "", ""],
 	];
 
-	const [refMatrix, setRefMatrix] = useState<Array<string[]> | null>(matrix);
+	const [refMatrix, setRefMatrix] = useState<Array<string[]>>(matrix);
+
+	function handleDelete(
+		currentCell: currentCellState,
+		refMatrix: Array<string[]>
+	) {
+		const { curRow, curCell } = currentCell;
+		const newMatrix = [...refMatrix];
+		newMatrix[curRow][curCell] = "";
+		setRefMatrix(newMatrix);
+		prevCell(currentCell);
+	}
 
 	return {
 		currentCell,
@@ -59,5 +70,6 @@ export function useWordle() {
 		setRefMatrix,
 		nextCell,
 		prevCell,
+		handleDelete,
 	};
 }
