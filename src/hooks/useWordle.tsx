@@ -60,7 +60,9 @@ export function useWordle() {
 		const newMatrix = [...refMatrix];
 		newMatrix[curRow][curCell] = "";
 		setRefMatrix(newMatrix);
-		prevCell(currentCell);
+		if (curCell !== 0) {
+			prevCell(currentCell);
+		}
 	}
 
 	function containsHeb(str: string): boolean {

@@ -2,6 +2,7 @@ import React, { useContext, KeyboardEvent } from "react";
 import { AppContext } from "../context/AppContext";
 import { InputGrid } from "./InputGrid";
 import { Keyboard } from "./Keyboard";
+import { Header } from "./Header";
 
 export function WordleApp(): JSX.Element {
 	const {
@@ -49,9 +50,7 @@ export function WordleApp(): JSX.Element {
 	}
 	return (
 		<div onKeyDown={handleKeyDown}>
-			<header>
-				<h1>וורדל!</h1>
-			</header>
+			<Header />
 			<section className="input-zone">
 				<InputGrid />
 			</section>
