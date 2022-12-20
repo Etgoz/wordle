@@ -44,7 +44,7 @@ export function WordleApp(): JSX.Element {
 			setRefMatrix(newMatrix);
 			nextCell(currentCell);
 			if (curCell === 4) {
-				setTimeout(() => alert("done"), 20);
+				console.log("done");
 			}
 		}
 	}

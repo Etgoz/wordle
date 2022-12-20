@@ -32,7 +32,7 @@ export function Keyboard() {
 		setRefMatrix(newMatrix);
 		nextCell(currentCell);
 		if (curCell === 4) {
-			setTimeout(() => alert("done"), 100);
+			console.log("done");
 		}
 	}
 

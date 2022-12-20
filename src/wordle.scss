@@ -24,12 +24,34 @@ body {
 }
 
 header {
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
 	margin-bottom: 2rem;
 	background-color: antiquewhite;
 
 	h1 {
 		font-size: 3rem;
 		margin: 0;
+	}
+
+	button {
+		@include center;
+		padding-top: 0.4rem;
+		height: 3rem;
+		width: 3rem;
+		border: 3px solid grey;
+		border-radius: 8px;
+		font-size: 2.5rem;
+	}
+
+	button:active {
+		border-color: black;
+		box-shadow: 0 0 5px black;
+	}
+
+	button:hover {
+		cursor: pointer;
 	}
 }
 

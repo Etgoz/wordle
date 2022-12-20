@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface currentCellState {
 	curRow: number;
@@ -10,6 +10,17 @@ export function useWordle() {
 		curRow: 0,
 		curCell: 0,
 	});
+
+	const matrix = [
+		["", "", "", "", ""],
+		["", "", "", "", ""],
+		["", "", "", "", ""],
+		["", "", "", "", ""],
+		["", "", "", "", ""],
+		["", "", "", "", ""],
+	];
+
+	const [refMatrix, setRefMatrix] = useState<string[][]>(matrix);
 
 	function nextCell(currentCell: currentCellState): void {
 		const { curRow, curCell } = currentCell;
@@ -40,17 +51,6 @@ export function useWordle() {
 		}
 		setCurrentCell({ curRow: newCurRow, curCell: newCurCell });
 	}
-
-	const matrix = [
-		["", "", "", "", ""],
-		["", "", "", "", ""],
-		["", "", "", "", ""],
-		["", "", "", "", ""],
-		["", "", "", "", ""],
-		["", "", "", "", ""],
-	];
-
-	const [refMatrix, setRefMatrix] = useState<Array<string[]>>(matrix);
 
 	function handleDelete(
 		currentCell: currentCellState,
