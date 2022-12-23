@@ -40,7 +40,7 @@ export function WordleApp(): JSX.Element {
 				}
 			}
 			const newMatrix = [...refMatrix];
-			newMatrix[curRow][curCell] = key;
+			newMatrix[curRow][curCell].content = key;
 			setRefMatrix(newMatrix);
 			nextCell(currentCell);
 			if (curCell === 4) {

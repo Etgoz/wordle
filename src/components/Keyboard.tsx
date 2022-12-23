@@ -1,10 +1,14 @@
 import React, { useContext } from "react";
 import { AppContext } from "../context/AppContext";
 
-export function Keyboard() {
+export function Keyboard(): JSX.Element {
 	const { currentCell, refMatrix, setRefMatrix, nextCell, handleDelete } =
 		useContext(AppContext);
 	const { curRow, curCell } = currentCell;
+
+	const firstLineLetters = ["פ", "ו", "ט", "א", "ר", "ק"];
+	const secondLineLetters = ["ל", "ח", "י", "ע", "כ", "ג", "ד", "ש"];
+	const thirdLineLetters = ["ת", "צ", "מ", "נ", "ה", "ב", "ס", "ז"];
 
 	function handleClick(ev: any) {
 		let letter = ev.target.innerText;
@@ -28,7 +32,7 @@ export function Keyboard() {
 			}
 		}
 		const newMatrix = [...refMatrix];
-		newMatrix[curRow][curCell] = letter;
+		newMatrix[curRow][curCell].content = letter;
 		setRefMatrix(newMatrix);
 		nextCell(currentCell);
 		if (curCell === 4) {
@@ -49,76 +53,31 @@ export function Keyboard() {
 				>
 					del
 				</button>
-				<button onClick={handleClick} type="button">
-					פ
-				</button>
-				<button onClick={handleClick} type="button">
-					ו
-				</button>
-				<button onClick={handleClick} type="button">
-					ט
-				</button>
-				<button onClick={handleClick} type="button">
-					א
-				</button>
-				<button onClick={handleClick} type="button">
-					ר
-				</button>
-				<button onClick={handleClick} type="button">
-					ק
-				</button>
+				{firstLineLetters.map((letter) => {
+					return (
+						<button onClick={handleClick} type="button" key={letter}>
+							{letter}
+						</button>
+					);
+				})}
 			</div>
 			<div className="keyboard" id="mid-line">
-				<button onClick={handleClick} type="button">
-					ל
-				</button>
-				<button onClick={handleClick} type="button">
-					ח
-				</button>
-				<button onClick={handleClick} type="button">
-					י
-				</button>
-				<button onClick={handleClick} type="button">
-					ע
-				</button>
-				<button onClick={handleClick} type="button">
-					כ
-				</button>
-				<button onClick={handleClick} type="button">
-					ג
-				</button>
-				<button onClick={handleClick} type="button">
-					ד
-				</button>
-				<button onClick={handleClick} type="button">
-					ש
-				</button>
+				{secondLineLetters.map((letter) => {
+					return (
+						<button onClick={handleClick} type="button" key={letter}>
+							{letter}
+						</button>
+					);
+				})}
 			</div>
 			<div className="keyboard" id="bottom-line">
-				<button onClick={handleClick} type="button">
-					ת
-				</button>
-				<button onClick={handleClick} type="button">
-					צ
-				</button>
-				<button onClick={handleClick} type="button">
-					מ
-				</button>
-				<button onClick={handleClick} type="button">
-					נ
-				</button>
-				<button onClick={handleClick} type="button">
-					ה
-				</button>
-				<button onClick={handleClick} type="button">
-					ב
-				</button>
-				<button onClick={handleClick} type="button">
-					ס
-				</button>
-				<button onClick={handleClick} type="button">
-					ז
-				</button>
+				{thirdLineLetters.map((letter) => {
+					return (
+						<button onClick={handleClick} type="button" key={letter}>
+							{letter}
+						</button>
+					);
+				})}
 			</div>
 		</>
 	);

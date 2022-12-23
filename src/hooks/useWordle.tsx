@@ -1,8 +1,14 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 interface currentCellState {
 	curRow: number;
 	curCell: number;
+}
+
+interface IRefMatrix {
+	content: string;
+	status: string;
+	//status: empty / wrong / cow / bull
 }
 
 export function useWordle() {
@@ -12,15 +18,53 @@ export function useWordle() {
 	});
 
 	const matrix = [
-		["", "", "", "", ""],
-		["", "", "", "", ""],
-		["", "", "", "", ""],
-		["", "", "", "", ""],
-		["", "", "", "", ""],
-		["", "", "", "", ""],
+		[
+			{ content: "", status: "empty" },
+			{ content: "", status: "empty" },
+			{ content: "", status: "empty" },
+			{ content: "", status: "empty" },
+			{ content: "", status: "empty" },
+		],
+		[
+			{ content: "", status: "empty" },
+			{ content: "", status: "empty" },
+			{ content: "", status: "empty" },
+			{ content: "", status: "empty" },
+			{ content: "", status: "empty" },
+		],
+		[
+			{ content: "", status: "empty" },
+			{ content: "", status: "empty" },
+			{ content: "", status: "empty" },
+			{ content: "", status: "empty" },
+			{ content: "", status: "empty" },
+		],
+		[
+			{ content: "", status: "empty" },
+			{ content: "", status: "empty" },
+			{ content: "", status: "empty" },
+			{ content: "", status: "empty" },
+			{ content: "", status: "empty" },
+		],
+		[
+			{ content: "", status: "empty" },
+			{ content: "", status: "empty" },
+			{ content: "", status: "empty" },
+			{ content: "", status: "empty" },
+			{ content: "", status: "empty" },
+		],
+		[
+			{ content: "", status: "empty" },
+			{ content: "", status: "empty" },
+			{ content: "", status: "empty" },
+			{ content: "", status: "empty" },
+			{ content: "", status: "empty" },
+		],
 	];
 
-	const [refMatrix, setRefMatrix] = useState<string[][]>(matrix);
+	const [refMatrix, setRefMatrix] = useState<IRefMatrix[][]>(matrix);
+
+	const theWord = "אפילו";
 
 	function nextCell(currentCell: currentCellState): void {
 		const { curRow, curCell } = currentCell;
@@ -54,11 +98,11 @@ export function useWordle() {
 
 	function handleDelete(
 		currentCell: currentCellState,
-		refMatrix: Array<string[]>
+		refMatrix: Array<IRefMatrix[]>
 	) {
 		const { curRow, curCell } = currentCell;
 		const newMatrix = [...refMatrix];
-		newMatrix[curRow][curCell] = "";
+		newMatrix[curRow][curCell].content = "";
 		setRefMatrix(newMatrix);
 		if (curCell !== 0) {
 			prevCell(currentCell);

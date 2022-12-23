@@ -13,7 +13,7 @@ export function InputCell({ rowNumber, cellNumber }: CellProps): JSX.Element {
 
 	return (
 		<div className={`input ${isCurrentCell && "focused"}`} tabIndex={0}>
-			{refMatrix[rowNumber][cellNumber]}
+			{refMatrix[rowNumber][cellNumber].content}
 		</div>
 	);
 }
