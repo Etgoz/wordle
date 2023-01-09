@@ -2,8 +2,17 @@ import React, { useContext } from "react";
 import { AppContext } from "../context/AppContext";
 
 export function Keyboard(): JSX.Element {
-	const { currentCell, refMatrix, setRefMatrix, nextCell, handleDelete } =
-		useContext(AppContext);
+	const {
+		currentCell,
+		refMatrix,
+		setRefMatrix,
+		nextCell,
+		handleDelete,
+		checkWord,
+		winIndicator,
+		lastCellIndicator,
+		setLastCellIndicator,
+	} = useContext(AppContext);
 	const { curRow, curCell } = currentCell;
 
 	const firstLineLetters = ["פ", "ו", "ט", "א", "ר", "ק"];
@@ -11,32 +20,42 @@ export function Keyboard(): JSX.Element {
 	const thirdLineLetters = ["ת", "צ", "מ", "נ", "ה", "ב", "ס", "ז"];
 
 	function handleClick(ev: any) {
-		let letter = ev.target.innerText;
-		if (curCell === 4 && "כמנצפ".includes(letter)) {
-			switch (letter) {
-				case "כ":
-					letter = "ך";
-					break;
-				case "מ":
-					letter = "ם";
-					break;
-				case "נ":
-					letter = "ן";
-					break;
-				case "פ":
-					letter = "ף";
-					break;
-				case "צ":
-					letter = "ץ";
-					break;
+		if (!lastCellIndicator) {
+			let letter = ev.target.innerText;
+			if (curCell === 4 && "כמנצפ".includes(letter)) {
+				switch (letter) {
+					case "כ":
+						letter = "ך";
+						break;
+					case "מ":
+						letter = "ם";
+						break;
+					case "נ":
+						letter = "ן";
+						break;
+					case "פ":
+						letter = "ף";
+						break;
+					case "צ":
+						letter = "ץ";
+						break;
+				}
 			}
-		}
-		const newMatrix = [...refMatrix];
-		newMatrix[curRow][curCell].content = letter;
-		setRefMatrix(newMatrix);
-		nextCell(currentCell);
-		if (curCell === 4) {
-			console.log("done");
+			const newMatrix = [...refMatrix];
+			newMatrix[curRow][curCell].content = letter;
+			setRefMatrix(newMatrix);
+			nextCell(currentCell);
+			if (curCell === 4) {
+				console.log("checking user guess");
+				let userGuess = "";
+				for (let i = 0; i < 5; i++) {
+					userGuess.concat(refMatrix[curRow][i].content);
+				}
+				checkWord(userGuess, curRow);
+			}
+			if ((curRow === 5 && curCell === 4) || winIndicator) {
+				setLastCellIndicator(true);
+			}
 		}
 	}
 

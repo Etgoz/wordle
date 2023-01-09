@@ -24,11 +24,17 @@ body {
 }
 
 header {
-	display: flex;
-	justify-content: space-around;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	justify-items: center;
 	align-items: center;
 	margin-bottom: 2rem;
 	background-color: antiquewhite;
+
+	div {
+		display: flex;
+		gap: 1rem;
+	}
 
 	h1 {
 		font-size: 3rem;
@@ -42,7 +48,6 @@ header {
 		width: 3rem;
 		border: 3px solid grey;
 		border-radius: 8px;
-		font-size: 2.5rem;
 	}
 
 	button:active {
@@ -52,6 +57,23 @@ header {
 
 	button:hover {
 		cursor: pointer;
+	}
+
+	#helpButton {
+		font-size: 2.5rem;
+	}
+}
+
+.userArea {
+	button {
+		width: 5rem;
+		padding: 0;
+		font-size: 1.2rem;
+	}
+
+	span {
+		@include center;
+		font-size: 1.2rem;
 	}
 }
 
@@ -89,6 +111,18 @@ header {
 	// 	border-color: black;
 	// 	box-shadow: 0 0 5px black;
 	// }
+}
+
+.bull {
+	background-color: rgb(0, 190, 0);
+}
+
+.cow {
+	background-color: yellow;
+}
+
+.wrong {
+	background-color: gray;
 }
 
 .keyboard-zone {
