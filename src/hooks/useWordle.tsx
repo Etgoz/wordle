@@ -11,6 +11,12 @@ interface IRefMatrix {
 	//status: empty / wrong / cow / bull
 }
 
+interface IGussedLetters {
+	bull: string[];
+	cow: string[];
+	wrong: string[];
+}
+
 export function useWordle() {
 	const [currentCell, setCurrentCell] = useState<currentCellState>({
 		curRow: 0,
@@ -68,7 +74,13 @@ export function useWordle() {
 
 	const [lastCellIndicator, setLastCellIndicator] = useState<boolean>(false);
 
-	const theWord = "אפילו";
+	const [guessedLetters, setGuessedLetters] = useState<IGussedLetters>({
+		bull: [],
+		cow: [],
+		wrong: [],
+	});
+
+	const theWord = "אלבום";
 
 	function nextCell(currentCell: currentCellState): void {
 		const { curRow, curCell } = currentCell;
@@ -119,21 +131,59 @@ export function useWordle() {
 		return /[א-ת]/.test(str);
 	}
 
+	function switchFinalLetters(str: string): string {
+		let char = str.substring(str.length - 1);
+		let replaceLetter = "";
+		if ("ךםןץף".includes(char)) {
+			switch (char) {
+				case "ך":
+					replaceLetter = "כ";
+					break;
+				case "ם":
+					replaceLetter = "מ";
+					break;
+				case "ן":
+					replaceLetter = "נ";
+					break;
+				case "ף":
+					replaceLetter = "פ";
+					break;
+				case "ץ":
+					replaceLetter = "צ";
+					break;
+			}
+
+			const newStr = str.replace(char, replaceLetter);
+			return newStr;
+		}
+		return str;
+	}
+
 	function checkWord(userGuess: string, curRow: number) {
 		const newMatrix = [...refMatrix];
+		const guessed = { ...guessedLetters };
 		if (userGuess === theWord) {
 			setWinIndicator(true);
+			setLastCellIndicator(true);
+			console.log("success");
 			for (let i = 0; i < 5; i++) {
 				newMatrix[curRow][i].status = "bull";
 			}
 		} else {
 			for (let i = 0; i < 5; i++) {
-				if (newMatrix[curRow][i].content === theWord[i]) {
+				const checkedLetter = switchFinalLetters(newMatrix[curRow][i].content);
+				const theWordCurLetter = switchFinalLetters(theWord[i]);
+				const theWordNoFinals = switchFinalLetters(theWord);
+				if (checkedLetter === theWordCurLetter) {
 					newMatrix[curRow][i].status = "bull";
-				} else if (theWord.includes(newMatrix[curRow][i].content)) {
+					guessed.bull.push(checkedLetter);
+					setGuessedLetters(guessed);
+				} else if (theWordNoFinals.includes(checkedLetter)) {
 					newMatrix[curRow][i].status = "cow";
+					guessed.cow.push(checkedLetter);
 				} else {
 					newMatrix[curRow][i].status = "wrong";
+					guessed.wrong.push(checkedLetter);
 				}
 			}
 		}
@@ -174,7 +224,7 @@ export function useWordle() {
 					console.log("checking user guess");
 					let userGuess = "";
 					for (let i = 0; i < 5; i++) {
-						userGuess.concat(refMatrix[curRow][i].content);
+						userGuess += refMatrix[curRow][i].content;
 					}
 					checkWord(userGuess, curRow);
 				}
@@ -192,6 +242,7 @@ export function useWordle() {
 		setRefMatrix,
 		winIndicator,
 		lastCellIndicator,
+		guessedLetters,
 		setLastCellIndicator,
 		nextCell,
 		prevCell,

@@ -8,8 +8,8 @@ export function Keyboard(): JSX.Element {
 		setRefMatrix,
 		nextCell,
 		handleDelete,
+		guessedLetters,
 		checkWord,
-		winIndicator,
 		lastCellIndicator,
 		setLastCellIndicator,
 	} = useContext(AppContext);
@@ -49,13 +49,25 @@ export function Keyboard(): JSX.Element {
 				console.log("checking user guess");
 				let userGuess = "";
 				for (let i = 0; i < 5; i++) {
-					userGuess.concat(refMatrix[curRow][i].content);
+					userGuess += refMatrix[curRow][i].content;
 				}
 				checkWord(userGuess, curRow);
 			}
-			if ((curRow === 5 && curCell === 4) || winIndicator) {
+			if (curRow === 5 && curCell === 4) {
 				setLastCellIndicator(true);
 			}
+		}
+	}
+
+	function letterClass(letter: string): string {
+		if (guessedLetters.bull.includes(letter)) {
+			return "bull";
+		} else if (guessedLetters.cow.includes(letter)) {
+			return "cow";
+		} else if (guessedLetters.wrong.includes(letter)) {
+			return "wrong";
+		} else {
+			return "";
 		}
 	}
 
@@ -74,7 +86,12 @@ export function Keyboard(): JSX.Element {
 				</button>
 				{firstLineLetters.map((letter) => {
 					return (
-						<button onClick={handleClick} type="button" key={letter}>
+						<button
+							onClick={handleClick}
+							type="button"
+							key={letter}
+							className={letterClass(letter)}
+						>
 							{letter}
 						</button>
 					);
@@ -83,7 +100,12 @@ export function Keyboard(): JSX.Element {
 			<div className="keyboard" id="mid-line">
 				{secondLineLetters.map((letter) => {
 					return (
-						<button onClick={handleClick} type="button" key={letter}>
+						<button
+							onClick={handleClick}
+							type="button"
+							key={letter}
+							className={letterClass(letter)}
+						>
 							{letter}
 						</button>
 					);
@@ -92,7 +114,12 @@ export function Keyboard(): JSX.Element {
 			<div className="keyboard" id="bottom-line">
 				{thirdLineLetters.map((letter) => {
 					return (
-						<button onClick={handleClick} type="button" key={letter}>
+						<button
+							onClick={handleClick}
+							type="button"
+							key={letter}
+							className={letterClass(letter)}
+						>
 							{letter}
 						</button>
 					);
