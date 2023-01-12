@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { AppContext } from "../context/AppContext";
-import "../helpModal.scss";
+import "../modal.scss";
 
 export function HelpModal(): JSX.Element {
 	const { toggleHelpVisability } = useContext(AppContext);

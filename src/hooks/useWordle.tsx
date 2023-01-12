@@ -80,6 +80,20 @@ export function useWordle() {
 		wrong: [],
 	});
 
+	const [helpVisable, setHelpVisable] = useState(false);
+
+	function toggleHelpVisability() {
+		loginVisable && toggleLoginVisability();
+		setHelpVisable(!helpVisable);
+	}
+
+	const [loginVisable, setLoginVisable] = useState(false);
+
+	function toggleLoginVisability() {
+		helpVisable && toggleHelpVisability();
+		setLoginVisable(!loginVisable);
+	}
+
 	const theWord = "אלבום";
 
 	function nextCell(currentCell: currentCellState): void {
@@ -162,41 +176,31 @@ export function useWordle() {
 	function checkWord(userGuess: string, curRow: number) {
 		const newMatrix = [...refMatrix];
 		const guessed = { ...guessedLetters };
+
+		for (let i = 0; i < 5; i++) {
+			const checkedLetter = switchFinalLetters(newMatrix[curRow][i].content);
+			const theWordCurLetter = switchFinalLetters(theWord[i]);
+			const theWordNoFinals = switchFinalLetters(theWord);
+			if (checkedLetter === theWordCurLetter) {
+				newMatrix[curRow][i].status = "bull";
+				guessed.bull.push(checkedLetter);
+				setGuessedLetters(guessed);
+			} else if (theWordNoFinals.includes(checkedLetter)) {
+				newMatrix[curRow][i].status = "cow";
+				guessed.cow.push(checkedLetter);
+			} else {
+				newMatrix[curRow][i].status = "wrong";
+				guessed.wrong.push(checkedLetter);
+			}
+		}
 		if (userGuess === theWord) {
 			setWinIndicator(true);
 			setLastCellIndicator(true);
 			console.log("success");
-			for (let i = 0; i < 5; i++) {
-				newMatrix[curRow][i].status = "bull";
-			}
-		} else {
-			for (let i = 0; i < 5; i++) {
-				const checkedLetter = switchFinalLetters(newMatrix[curRow][i].content);
-				const theWordCurLetter = switchFinalLetters(theWord[i]);
-				const theWordNoFinals = switchFinalLetters(theWord);
-				if (checkedLetter === theWordCurLetter) {
-					newMatrix[curRow][i].status = "bull";
-					guessed.bull.push(checkedLetter);
-					setGuessedLetters(guessed);
-				} else if (theWordNoFinals.includes(checkedLetter)) {
-					newMatrix[curRow][i].status = "cow";
-					guessed.cow.push(checkedLetter);
-				} else {
-					newMatrix[curRow][i].status = "wrong";
-					guessed.wrong.push(checkedLetter);
-				}
-			}
-		}
-		if (curRow === 5 && userGuess !== theWord) {
+		} else if (curRow === 5 && userGuess !== theWord) {
 			console.log("fail");
 		}
 		setRefMatrix(newMatrix);
-	}
-
-	const [helpVisable, setHelpVisable] = useState(false);
-
-	function toggleHelpVisability() {
-		setHelpVisable(!helpVisable);
 	}
 
 	function handleKeyDown(ev: KeyboardEvent<HTMLDivElement>) {
@@ -264,5 +268,7 @@ export function useWordle() {
 		checkWord,
 		helpVisable,
 		toggleHelpVisability,
+		loginVisable,
+		toggleLoginVisability,
 	};
 }

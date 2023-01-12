@@ -4,9 +4,10 @@ import { InputGrid } from "./InputGrid";
 import { Keyboard } from "./Keyboard";
 import { Header } from "./Header";
 import { HelpModal } from "./HelpModal";
+import { LoginFile } from "./LoginFile";
 
 export function WordleApp(): JSX.Element {
-	const { handleKeyDown, helpVisable } = useContext(AppContext);
+	const { handleKeyDown, helpVisable, loginVisable } = useContext(AppContext);
 
 	return (
 		<>
@@ -20,6 +21,7 @@ export function WordleApp(): JSX.Element {
 				</section>
 			</div>
 			{helpVisable && <HelpModal />}
+			{loginVisable && <LoginFile />}
 		</>
 	);
 }

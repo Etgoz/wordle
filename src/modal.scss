@@ -20,6 +20,10 @@
 		text-align: justify;
 		font-size: 1.5rem;
 	}
+	span {
+		display: inline-block;
+		width: 3.5rem;
+	}
 }
 
 .exitButton {
@@ -44,4 +48,11 @@ button:active {
 
 button:hover {
 	cursor: pointer;
+}
+
+form {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	font-size: 1.5rem;
 }
