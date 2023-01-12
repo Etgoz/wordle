@@ -1,6 +1,7 @@
 import React from "react";
 import { createBrowserRouter } from "react-router-dom";
 import App from "./App";
+import { Welcome } from "./components/Welcome";
 
 export const router = createBrowserRouter([
 	{
@@ -8,7 +9,7 @@ export const router = createBrowserRouter([
 		element: <App />,
 	},
 	{
-		path: "/help",
-		element: <h1>help</h1>,
+		path: "/welcome",
+		element: <Welcome />,
 	},
 ]);

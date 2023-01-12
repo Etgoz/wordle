@@ -187,10 +187,22 @@ export function useWordle() {
 				}
 			}
 		}
+		if (curRow === 5 && userGuess !== theWord) {
+			console.log("fail");
+		}
 		setRefMatrix(newMatrix);
 	}
 
+	const [helpVisable, setHelpVisable] = useState(false);
+
+	function toggleHelpVisability() {
+		setHelpVisable(!helpVisable);
+	}
+
 	function handleKeyDown(ev: KeyboardEvent<HTMLDivElement>) {
+		if (helpVisable && ev.key === "Escape") {
+			setHelpVisable(false);
+		}
 		if (!lastCellIndicator) {
 			let key = ev.key;
 			const { curRow, curCell } = currentCell;
@@ -250,5 +262,7 @@ export function useWordle() {
 		containsHeb,
 		handleKeyDown,
 		checkWord,
+		helpVisable,
+		toggleHelpVisability,
 	};
 }

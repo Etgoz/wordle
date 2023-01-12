@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
+import { AppContext } from "../context/AppContext";
 
 export function Header(): JSX.Element {
+	const { toggleHelpVisability } = useContext(AppContext);
+
 	return (
 		<header>
 			<div className="userArea">
@@ -9,7 +12,7 @@ export function Header(): JSX.Element {
 				<span>שלום אורח!</span>
 			</div>
 			<h1>וורדל!</h1>
-			<button type="button" id="helpButton">
+			<button type="button" id="helpButton" onClick={toggleHelpVisability}>
 				?
 			</button>
 		</header>
