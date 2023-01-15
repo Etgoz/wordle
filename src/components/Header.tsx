@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { AppContext } from "../context/AppContext";
 import { AuthContext } from "../context/AuthContext";
 
@@ -7,32 +7,25 @@ export function Header(): JSX.Element {
 		useContext(AppContext);
 	const { userName, setUserName } = useContext(AuthContext);
 
-	useEffect(() => {
-		const storedUserName = localStorage.getItem("userName");
-		if (storedUserName) {
-			setUserName(storedUserName);
-		}
-	}, [userName]);
+	function handleLogOut() {
+		setUserName("");
+		localStorage.removeItem("userName");
+		console.log("logout\n", userName, "\n", localStorage.getItem("userName"));
+	}
 
 	return (
 		<header>
 			<div className="userArea">
-				{!userName ? (
+				{userName ? (
+					<button type="button" onClick={handleLogOut}>
+						log out
+					</button>
+				) : (
 					<button type="button" onClick={toggleLoginVisability}>
 						log in
 					</button>
-				) : (
-					<button
-						type="button"
-						onClick={() => {
-							setUserName(null);
-							localStorage.removeItem(userName);
-						}}
-					>
-						log out
-					</button>
 				)}
-				{!userName ? <span>שלום אורח!</span> : <span>שלום {userName}!</span>}
+				{userName ? <span>שלום {userName}!</span> : <span>שלום אורח/ת!</span>}
 			</div>
 			<h1>וורדל!</h1>
 			<button type="button" id="helpButton" onClick={toggleHelpVisability}>

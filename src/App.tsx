@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useLocation, useNavigate, redirect } from "react-router-dom";
 import { WordleApp } from "./components/WordleApp";
 import { AppContext } from "./context/AppContext";
 import { AuthContext } from "./context/AuthContext";
@@ -11,15 +11,15 @@ function App(): JSX.Element {
 	const wordleApi = useWordle();
 	const appAuth = useAuth();
 	const location = useLocation();
-	const [hasLoaded, setHasLoaded] = useState(false);
+	const nevigate = useNavigate();
 
 	useEffect(() => {
-		if (hasLoaded && location.pathname === "/") {
+		if (!localStorage.getItem("welcomeLoaded") && location.pathname === "/") {
 			// Redirect to the desired page
-			window.location.replace("/welcome");
-			setHasLoaded(true);
+			localStorage.setItem("welcomeLoaded", "true");
+			redirect("/welcome");
 		}
-	}, [hasLoaded, location]);
+	}, []);
 
 	return (
 		<AuthContext.Provider value={appAuth}>

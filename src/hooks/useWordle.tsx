@@ -72,7 +72,7 @@ export function useWordle() {
 
 	const [winIndicator, setWinIndicator] = useState<boolean>(false);
 
-	const [lastCellIndicator, setLastCellIndicator] = useState<boolean>(false);
+	const [activeGame, setActiveGame] = useState<boolean>(true);
 
 	const [guessedLetters, setGuessedLetters] = useState<IGussedLetters>({
 		bull: [],
@@ -132,12 +132,11 @@ export function useWordle() {
 	) {
 		const { curRow, curCell } = currentCell;
 		const newMatrix = [...refMatrix];
-		if (curRow !== 5 && curCell !== 4) {
-			newMatrix[curRow][curCell].content = "";
-			setRefMatrix(newMatrix);
-			if (curCell !== 0) {
-				prevCell(currentCell);
-			}
+
+		newMatrix[curRow][curCell].content = "";
+		setRefMatrix(newMatrix);
+		if (curCell !== 0 && activeGame) {
+			prevCell(currentCell);
 		}
 	}
 
@@ -195,9 +194,10 @@ export function useWordle() {
 		}
 		if (userGuess === theWord) {
 			setWinIndicator(true);
-			setLastCellIndicator(true);
+			setActiveGame(false);
 			console.log("success");
 		} else if (curRow === 5 && userGuess !== theWord) {
+			setActiveGame(false);
 			console.log("fail");
 		}
 		setRefMatrix(newMatrix);
@@ -207,7 +207,7 @@ export function useWordle() {
 		if (helpVisable && ev.key === "Escape") {
 			setHelpVisable(false);
 		}
-		if (!lastCellIndicator) {
+		if (activeGame) {
 			let key = ev.key;
 			const { curRow, curCell } = currentCell;
 			if (["Backspace", "Delete", "del"].includes(key)) {
@@ -245,7 +245,7 @@ export function useWordle() {
 					checkWord(userGuess, curRow);
 				}
 				if ((curRow === 5 && curCell === 4) || winIndicator) {
-					setLastCellIndicator(true);
+					setActiveGame(false);
 				}
 			}
 		}
@@ -257,9 +257,9 @@ export function useWordle() {
 		refMatrix,
 		setRefMatrix,
 		winIndicator,
-		lastCellIndicator,
+		activeGame,
 		guessedLetters,
-		setLastCellIndicator,
+		setActiveGame,
 		nextCell,
 		prevCell,
 		handleDelete,

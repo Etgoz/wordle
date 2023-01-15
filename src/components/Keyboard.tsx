@@ -10,8 +10,8 @@ export function Keyboard(): JSX.Element {
 		handleDelete,
 		guessedLetters,
 		checkWord,
-		lastCellIndicator,
-		setLastCellIndicator,
+		activeGame,
+		setActiveGame,
 	} = useContext(AppContext);
 	const { curRow, curCell } = currentCell;
 
@@ -20,7 +20,7 @@ export function Keyboard(): JSX.Element {
 	const thirdLineLetters = ["ת", "צ", "מ", "נ", "ה", "ב", "ס", "ז"];
 
 	function handleClick(ev: any) {
-		if (!lastCellIndicator) {
+		if (activeGame) {
 			let letter = ev.target.innerText;
 			if (curCell === 4 && "כמנצפ".includes(letter)) {
 				switch (letter) {
@@ -54,7 +54,7 @@ export function Keyboard(): JSX.Element {
 				checkWord(userGuess, curRow);
 			}
 			if (curRow === 5 && curCell === 4) {
-				setLastCellIndicator(true);
+				setActiveGame(false);
 			}
 		}
 	}

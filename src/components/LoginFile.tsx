@@ -9,8 +9,10 @@ export function LoginFile(): JSX.Element {
 	const nameInputRef = useRef<HTMLInputElement>(null);
 
 	function handleSubmit() {
-		setUserName(nameInputRef.current?.value);
-		localStorage.setItem("userName", userName);
+		const curUserName = nameInputRef.current!.value;
+		setUserName(curUserName);
+		localStorage.setItem("userName", curUserName);
+		console.log(curUserName, "\n", localStorage.getItem("userName"));
 		toggleLoginVisability();
 	}
 
