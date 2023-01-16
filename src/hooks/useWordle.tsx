@@ -254,9 +254,12 @@ export function useWordle() {
 	return {
 		currentCell,
 		setCurrentCell,
+		matrix,
 		refMatrix,
 		setRefMatrix,
 		winIndicator,
+		setWinIndicator,
+		setGuessedLetters,
 		activeGame,
 		guessedLetters,
 		setActiveGame,

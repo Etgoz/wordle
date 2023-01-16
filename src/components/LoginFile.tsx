@@ -4,7 +4,7 @@ import { AuthContext } from "../context/AuthContext";
 import "../modal.scss";
 
 export function LoginFile(): JSX.Element {
-	const { userName, setUserName } = useContext(AuthContext);
+	const { setUserName } = useContext(AuthContext);
 	const { toggleLoginVisability } = useContext(AppContext);
 	const nameInputRef = useRef<HTMLInputElement>(null);
 
