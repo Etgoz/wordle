@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-interface IUseAuth {
+export interface IUseAuth {
 	userName: string;
 	setUserName: Function;
 }

@@ -17,7 +17,32 @@ interface IGussedLetters {
 	wrong: string[];
 }
 
-export function useWordle() {
+export interface IUseWordle {
+	currentCell: currentCellState;
+	setCurrentCell: Function;
+	matrix: Object[];
+	refMatrix: IRefMatrix[][];
+	setRefMatrix: Function;
+	winIndicator: boolean;
+	setWinIndicator: Function;
+	setGuessedLetters: Function;
+	activeGame: boolean;
+	guessedLetters: IGussedLetters;
+	setActiveGame: Function;
+	nextCell: Function;
+	prevCell: Function;
+	handleDelete: Function;
+	containsHeb: Function;
+	handleKeyDown: Function;
+	checkWord: Function;
+	helpVisable: boolean;
+	toggleHelpVisability: Function;
+	loginVisable: boolean;
+	toggleLoginVisability: Function;
+	theWord: string;
+}
+
+export function useWordle(): IUseWordle {
 	const [currentCell, setCurrentCell] = useState<currentCellState>({
 		curRow: 0,
 		curCell: 0,
@@ -273,5 +298,6 @@ export function useWordle() {
 		toggleHelpVisability,
 		loginVisable,
 		toggleLoginVisability,
+		theWord,
 	};
 }

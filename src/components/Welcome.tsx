@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import { useAuth } from "../hooks/useAuth";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
@@ -10,7 +10,9 @@ export function Welcome(): JSX.Element {
 	return (
 		<AuthContext.Provider value={appAuth}>
 			<h1 className="welcome">Welcome {curUserName ? curUserName : "User"}</h1>
-			<Link to="/">למשחק</Link>
+			<Link to="/">
+				<button style={{ fontSize: "2rem" }}>למשחק</button>
+			</Link>
 		</AuthContext.Provider>
 	);
 }

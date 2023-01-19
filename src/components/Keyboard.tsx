@@ -1,79 +1,17 @@
 import React, { useContext } from "react";
 import { AppContext } from "../context/AppContext";
+import { KeyboardRow } from "./KeyboardRow";
 
 export function Keyboard(): JSX.Element {
-	const {
-		currentCell,
-		refMatrix,
-		setRefMatrix,
-		nextCell,
-		handleDelete,
-		guessedLetters,
-		checkWord,
-		activeGame,
-		setActiveGame,
-	} = useContext(AppContext);
-	const { curRow, curCell } = currentCell;
+	const { currentCell, refMatrix, handleDelete } = useContext(AppContext);
 
 	const firstLineLetters = ["פ", "ו", "ט", "א", "ר", "ק"];
 	const secondLineLetters = ["ל", "ח", "י", "ע", "כ", "ג", "ד", "ש"];
 	const thirdLineLetters = ["ת", "צ", "מ", "נ", "ה", "ב", "ס", "ז"];
 
-	function handleClick(ev: any) {
-		if (activeGame) {
-			let letter = ev.target.innerText;
-			if (curCell === 4 && "כמנצפ".includes(letter)) {
-				switch (letter) {
-					case "כ":
-						letter = "ך";
-						break;
-					case "מ":
-						letter = "ם";
-						break;
-					case "נ":
-						letter = "ן";
-						break;
-					case "פ":
-						letter = "ף";
-						break;
-					case "צ":
-						letter = "ץ";
-						break;
-				}
-			}
-			const newMatrix = [...refMatrix];
-			newMatrix[curRow][curCell].content = letter;
-			setRefMatrix(newMatrix);
-			nextCell(currentCell);
-			if (curCell === 4) {
-				console.log("checking user guess");
-				let userGuess = "";
-				for (let i = 0; i < 5; i++) {
-					userGuess += refMatrix[curRow][i].content;
-				}
-				checkWord(userGuess, curRow);
-			}
-			if (curRow === 5 && curCell === 4) {
-				setActiveGame(false);
-			}
-		}
-	}
-
-	function letterClass(letter: string): string {
-		if (guessedLetters.bull.includes(letter)) {
-			return "bull";
-		} else if (guessedLetters.cow.includes(letter)) {
-			return "cow";
-		} else if (guessedLetters.wrong.includes(letter)) {
-			return "wrong";
-		} else {
-			return "";
-		}
-	}
-
 	return (
 		<>
-			<div className="keyboard" id="top-line">
+			<div className="keyboard">
 				{/* <button type="button" id="submit">
 						שלח
 					</button> */}
@@ -84,47 +22,10 @@ export function Keyboard(): JSX.Element {
 				>
 					del
 				</button>
-				{firstLineLetters.map((letter) => {
-					return (
-						<button
-							onClick={handleClick}
-							type="button"
-							key={letter}
-							className={letterClass(letter)}
-						>
-							{letter}
-						</button>
-					);
-				})}
+				<KeyboardRow letters={firstLineLetters} />
 			</div>
-			<div className="keyboard" id="mid-line">
-				{secondLineLetters.map((letter) => {
-					return (
-						<button
-							onClick={handleClick}
-							type="button"
-							key={letter}
-							className={letterClass(letter)}
-						>
-							{letter}
-						</button>
-					);
-				})}
-			</div>
-			<div className="keyboard" id="bottom-line">
-				{thirdLineLetters.map((letter) => {
-					return (
-						<button
-							onClick={handleClick}
-							type="button"
-							key={letter}
-							className={letterClass(letter)}
-						>
-							{letter}
-						</button>
-					);
-				})}
-			</div>
+			<KeyboardRow letters={secondLineLetters} />
+			<KeyboardRow letters={thirdLineLetters} />
 		</>
 	);
 }
