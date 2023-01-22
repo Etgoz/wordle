@@ -1,59 +1,62 @@
 import React, { useContext } from "react";
 import { AppContext } from "../context/AppContext";
+import { IUseWordle } from "../hooks/useWordle";
 
 export interface IKeyboardRow {
 	letters: string[];
 }
 export function KeyboardRow({ letters }: IKeyboardRow): JSX.Element {
 	const {
+		guessedLetters,
+		activeGame,
+		checkUserGuess,
 		currentCell,
 		refMatrix,
 		setRefMatrix,
 		nextCell,
-		guessedLetters,
-		checkWord,
-		activeGame,
+		winIndicator,
 		setActiveGame,
-	} = useContext(AppContext);
-
-	const { curRow, curCell } = currentCell;
+		setTheWord,
+	}: IUseWordle = useContext(AppContext);
 
 	function handleVirtualKeyboardClick(ev: any) {
 		if (activeGame) {
-			let letter = ev.target.innerText;
-			if (curCell === 4 && "כמנצפ".includes(letter)) {
-				switch (letter) {
+			let key = ev.target.innerText;
+			const { curRow, curCell } = currentCell;
+			if (curCell === 4 && "כמנצפ".includes(key)) {
+				switch (key) {
 					case "כ":
-						letter = "ך";
+						key = "ך";
 						break;
 					case "מ":
-						letter = "ם";
+						key = "ם";
 						break;
 					case "נ":
-						letter = "ן";
+						key = "ן";
 						break;
 					case "פ":
-						letter = "ף";
+						key = "ף";
 						break;
 					case "צ":
-						letter = "ץ";
+						key = "ץ";
 						break;
 				}
 			}
 			const newMatrix = [...refMatrix];
-			newMatrix[curRow][curCell].content = letter;
+			newMatrix[curRow][curCell].content = key;
 			setRefMatrix(newMatrix);
 			nextCell(currentCell);
 			if (curCell === 4) {
-				console.log("checking user guess");
-				let userGuess = "";
-				for (let i = 0; i < 5; i++) {
-					userGuess += refMatrix[curRow][i].content;
-				}
-				checkWord(userGuess, curRow);
+				checkUserGuess(key);
 			}
-			if (curRow === 5 && curCell === 4) {
-				setActiveGame(false);
+			if ((curRow === 5 && curCell === 4) || winIndicator) {
+				fetch("http://localhost:3001/word")
+					.then((response) => response.text())
+					.then((word) => {
+						setTheWord(word);
+						setActiveGame(false);
+					})
+					.catch((e) => console.log(e));
 			}
 		}
 	}

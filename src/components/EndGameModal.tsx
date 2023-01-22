@@ -2,10 +2,7 @@ import React, { useContext } from "react";
 import { AppContext } from "../context/AppContext";
 import "../modal.scss";
 
-export interface IEndGameModal {
-	theWord: string;
-}
-export function EndGameModal({ theWord }: IEndGameModal): JSX.Element {
+export function EndGameModal(): JSX.Element {
 	const {
 		winIndicator,
 		setWinIndicator,
@@ -14,6 +11,7 @@ export function EndGameModal({ theWord }: IEndGameModal): JSX.Element {
 		setActiveGame,
 		setCurrentCell,
 		setGuessedLetters,
+		theWord,
 	} = useContext(AppContext);
 
 	function handleNewGame() {
@@ -22,12 +20,13 @@ export function EndGameModal({ theWord }: IEndGameModal): JSX.Element {
 		setCurrentCell({ curRow: 0, curCell: 0 });
 		setGuessedLetters({ bull: [], cow: [], wrong: [] });
 		setActiveGame(true);
+		fetch("http://localhost:3001/newWord").then((response) => response.text());
 	}
 
 	return (
 		<div className="background">
 			<div className="textArea">
-				{winIndicator ? <div>כל הכבוד!</div> : <div>ניסיון יפה!</div>}
+				{winIndicator ? <div>כל הכבוד!</div> : <div>לא נורא, ניסיון יפה!</div>}
 				<div style={{ fontSize: "1rem" }}>
 					המילה היא: <span>{theWord}</span>
 				</div>

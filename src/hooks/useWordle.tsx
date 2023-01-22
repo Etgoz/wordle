@@ -11,10 +11,15 @@ interface IRefMatrix {
 	//status: empty / wrong / cow / bull
 }
 
-interface IGussedLetters {
+export interface IGussedLetters {
 	bull: string[];
 	cow: string[];
 	wrong: string[];
+}
+
+export interface ICheckWord {
+	winIndicator: boolean;
+	statusArray: string[];
 }
 
 export interface IUseWordle {
@@ -28,18 +33,20 @@ export interface IUseWordle {
 	setGuessedLetters: Function;
 	activeGame: boolean;
 	guessedLetters: IGussedLetters;
+	FrontCheckWord: Function;
 	setActiveGame: Function;
 	nextCell: Function;
 	prevCell: Function;
 	handleDelete: Function;
 	containsHeb: Function;
 	handleKeyDown: Function;
-	checkWord: Function;
 	helpVisable: boolean;
 	toggleHelpVisability: Function;
 	loginVisable: boolean;
 	toggleLoginVisability: Function;
+	checkUserGuess: Function;
 	theWord: string;
+	setTheWord: Function;
 }
 
 export function useWordle(): IUseWordle {
@@ -99,6 +106,8 @@ export function useWordle(): IUseWordle {
 
 	const [activeGame, setActiveGame] = useState<boolean>(true);
 
+	const [theWord, setTheWord] = useState<string>("");
+
 	const [guessedLetters, setGuessedLetters] = useState<IGussedLetters>({
 		bull: [],
 		cow: [],
@@ -118,8 +127,6 @@ export function useWordle(): IUseWordle {
 		helpVisable && toggleHelpVisability();
 		setLoginVisable(!loginVisable);
 	}
-
-	const theWord = "אלבום";
 
 	function nextCell(currentCell: currentCellState): void {
 		const { curRow, curCell } = currentCell;
@@ -197,35 +204,93 @@ export function useWordle(): IUseWordle {
 		return str;
 	}
 
-	function checkWord(userGuess: string, curRow: number) {
+	function FrontCheckWord(
+		userGuess: string,
+		curRow: number,
+		statusArray: string[]
+	) {
 		const newMatrix = [...refMatrix];
 		const guessed = { ...guessedLetters };
 
-		for (let i = 0; i < 5; i++) {
-			const checkedLetter = switchFinalLetters(newMatrix[curRow][i].content);
-			const theWordCurLetter = switchFinalLetters(theWord[i]);
-			const theWordNoFinals = switchFinalLetters(theWord);
-			if (checkedLetter === theWordCurLetter) {
-				newMatrix[curRow][i].status = "bull";
-				guessed.bull.push(checkedLetter);
-				setGuessedLetters(guessed);
-			} else if (theWordNoFinals.includes(checkedLetter)) {
-				newMatrix[curRow][i].status = "cow";
-				guessed.cow.push(checkedLetter);
-			} else {
-				newMatrix[curRow][i].status = "wrong";
-				guessed.wrong.push(checkedLetter);
+		const userGuessNoFinals = switchFinalLetters(userGuess);
+
+		statusArray.forEach((status, i) => {
+			newMatrix[curRow][i].status = status;
+			setRefMatrix(newMatrix);
+			if (status === "bull") {
+				guessed.bull.push(userGuessNoFinals[i]);
+			} else if (status === "cow") {
+				guessed.cow.push(userGuessNoFinals[i]);
+			} else if (status === "wrong") {
+				guessed.wrong.push(userGuessNoFinals[i]);
+			}
+			setGuessedLetters(guessed);
+		});
+	}
+
+	function checkUserGuess(key: string) {
+		const { curRow, curCell } = currentCell;
+		if (curCell === 4 && "כמנצפ".includes(key)) {
+			switch (key) {
+				case "כ":
+					key = "ך";
+					break;
+				case "מ":
+					key = "ם";
+					break;
+				case "נ":
+					key = "ן";
+					break;
+				case "פ":
+					key = "ף";
+					break;
+				case "צ":
+					key = "ץ";
+					break;
 			}
 		}
-		if (userGuess === theWord) {
-			setWinIndicator(true);
-			setActiveGame(false);
-			console.log("success");
-		} else if (curRow === 5 && userGuess !== theWord) {
-			setActiveGame(false);
-			console.log("fail");
-		}
+		const newMatrix = [...refMatrix];
+		newMatrix[curRow][curCell].content = key;
 		setRefMatrix(newMatrix);
+		nextCell(currentCell);
+
+		if (curCell === 4) {
+			console.log("checking user guess");
+			let userGuess = "";
+			for (let i = 0; i < 5; i++) {
+				userGuess += refMatrix[curRow][i].content;
+			}
+			let statusArray: string[] = [];
+			// checkWord(userGuess);
+			//post request to /checkWord in the server, should contain userGuess: IRefMatrix[], curRow: number, guessedLetters: IGussedLetters
+			const data = { userGuess };
+
+			fetch("http://localhost:3001/checkWord", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(data),
+			})
+				.then((response) => response.json())
+				.then((responseData: ICheckWord) => {
+					setWinIndicator(responseData.winIndicator);
+					statusArray = responseData.statusArray;
+					if (responseData.winIndicator) {
+						fetch("http://localhost:3001/word")
+							.then((response) => response.text())
+							.then((word) => {
+								setTheWord(word);
+								setActiveGame(false);
+							})
+							.catch((e) => console.log(e));
+					}
+					FrontCheckWord(userGuess, curRow, statusArray);
+				})
+				.catch((error) => {
+					console.error("Error:", error);
+				});
+
+			return;
+		}
 	}
 
 	function handleKeyDown(ev: KeyboardEvent<HTMLDivElement>) {
@@ -262,16 +327,17 @@ export function useWordle(): IUseWordle {
 				setRefMatrix(newMatrix);
 				nextCell(currentCell);
 				if (curCell === 4) {
-					console.log("checking user guess");
-					let userGuess = "";
-					for (let i = 0; i < 5; i++) {
-						userGuess += refMatrix[curRow][i].content;
-					}
-					checkWord(userGuess, curRow);
+					checkUserGuess(key);
 				}
-				if ((curRow === 5 && curCell === 4) || winIndicator) {
-					setActiveGame(false);
-				}
+			}
+			if ((curRow === 5 && curCell === 4) || winIndicator) {
+				fetch("http://localhost:3001/word")
+					.then((response) => response.text())
+					.then((word) => {
+						setTheWord(word);
+						setActiveGame(false);
+					})
+					.catch((e) => console.log(e));
 			}
 		}
 	}
@@ -287,17 +353,19 @@ export function useWordle(): IUseWordle {
 		setGuessedLetters,
 		activeGame,
 		guessedLetters,
+		FrontCheckWord,
 		setActiveGame,
 		nextCell,
 		prevCell,
 		handleDelete,
 		containsHeb,
 		handleKeyDown,
-		checkWord,
 		helpVisable,
 		toggleHelpVisability,
 		loginVisable,
 		toggleLoginVisability,
+		checkUserGuess,
 		theWord,
+		setTheWord,
 	};
 }

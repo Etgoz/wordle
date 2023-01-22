@@ -8,7 +8,7 @@ import { LoginFile } from "./LoginFile";
 import { EndGameModal } from "./EndGameModal";
 
 export function WordleApp(): JSX.Element {
-	const { handleKeyDown, helpVisable, loginVisable, activeGame, theWord } =
+	const { handleKeyDown, helpVisable, loginVisable, activeGame } =
 		useContext(AppContext);
 
 	return (
@@ -24,7 +24,7 @@ export function WordleApp(): JSX.Element {
 			</div>
 			{helpVisable && <HelpModal />}
 			{loginVisable && <LoginFile />}
-			{!activeGame && <EndGameModal theWord={theWord} />}
+			{!activeGame && <EndGameModal />}
 		</>
 	);
 }
