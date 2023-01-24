@@ -1,58 +1,68 @@
 .background {
-	background-color: rgba(23, 23, 23, 0.81);
-	z-index: 2;
-	position: absolute;
-	top: 70px;
-	left: 0;
-	height: calc(100% - 70px);
-	width: 100%;
-	display: flex;
-	justify-content: center;
-	align-items: center;
+  background-color: rgba(23, 23, 23, 0.81);
+  z-index: 2;
+  position: absolute;
+  top: 70px;
+  left: 0;
+  height: calc(100% - 70px);
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .textArea {
-	position: relative;
-	background-color: white;
-	padding: 2rem;
-	font-size: 2rem;
-	ol {
-		text-align: justify;
-		font-size: 1.5rem;
-	}
-	span {
-		display: inline-block;
-		width: 3.5rem;
-	}
+  position: relative;
+  background-color: white;
+  padding: 2rem;
+  font-size: 2rem;
+  ol {
+    text-align: justify;
+    font-size: 1.5rem;
+  }
+  span {
+    display: inline-block;
+    width: 3.5rem;
+  }
 }
 
 .exitButton {
-	position: absolute;
-	display: grid;
-	align-content: center;
-	text-align: center;
-	padding: 6px 4px 4px 4px;
-	top: 1rem;
-	right: 1rem;
-	font-size: 1.5rem;
-	height: 2rem;
-	width: 2rem;
-	border: 3px solid grey;
-	border-radius: 8px;
+  position: absolute;
+  display: grid;
+  align-content: center;
+  text-align: center;
+  padding: 6px 4px 4px 4px;
+  top: 1rem;
+  right: 1rem;
+  font-size: 1.5rem;
+  height: 2rem;
+  width: 2rem;
+  border: 3px solid grey;
+  border-radius: 8px;
 }
 
 button:active {
-	border-color: black;
-	box-shadow: 0 0 5px black;
+  border-color: black;
+  box-shadow: 0 0 5px black;
 }
 
 button:hover {
-	cursor: pointer;
+  cursor: pointer;
 }
 
-form {
-	display: flex;
-	align-items: center;
-	gap: 0.5rem;
-	font-size: 1.5rem;
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.7rem;
+  font-size: 1.5rem;
+
+  button {
+    font-size: 1.5rem;
+  }
+}
+
+.buttonsDiv {
+  display: flex;
+  gap: 1rem;
 }

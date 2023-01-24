@@ -1,17 +1,15 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 export interface IUseAuth {
-	userName: string;
-	setUserName: Function;
+  userName: string;
+  setUserName: Function;
 }
 
 export function useAuth(): IUseAuth {
-	const [userName, setUserName] = useState(
-		localStorage.getItem("userName") ?? ""
-	);
+  const [userName, setUserName] = useState(localStorage.getItem('userName') ?? '');
 
-	return {
-		userName,
-		setUserName,
-	};
+  return {
+    userName,
+    setUserName,
+  };
 }

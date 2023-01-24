@@ -1,18 +1,21 @@
-import React from "react";
-import { useAuth } from "../hooks/useAuth";
-import { Link } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
+import React from 'react';
+import { useAuth } from '../hooks/useAuth';
+import { AuthContext } from '../context/AuthContext';
+import { LoginFile } from './LoginFile';
+import '../wordle.scss';
 
 export function Welcome(): JSX.Element {
-	const appAuth = useAuth();
-	const curUserName = localStorage.getItem("userName");
+  const appAuth = useAuth();
+  const curUserName = localStorage.getItem('userName');
 
-	return (
-		<AuthContext.Provider value={appAuth}>
-			<h1 className="welcome">Welcome {curUserName ? curUserName : "User"}</h1>
-			<Link to="/">
-				<button style={{ fontSize: "2rem" }}>למשחק</button>
-			</Link>
-		</AuthContext.Provider>
-	);
+  return (
+    <AuthContext.Provider value={appAuth}>
+      <header>
+        <h1 className="welcome" style={{ gridColumn: 2 }}>
+          Welcome {curUserName ? curUserName : 'User'}
+        </h1>
+      </header>
+      <LoginFile />
+    </AuthContext.Provider>
+  );
 }

@@ -20,6 +20,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "format": "prettier --write src",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -44,6 +45,7 @@
     ]
   },
   "devDependencies": {
+    "prettier": "^2.8.3",
     "webpack-dev-server": "^4.11.1"
   }
 }

@@ -1,371 +1,364 @@
-import { useState, KeyboardEvent } from "react";
+import { useState, KeyboardEvent } from 'react';
 
 interface currentCellState {
-	curRow: number;
-	curCell: number;
+  curRow: number;
+  curCell: number;
 }
 
 interface IRefMatrix {
-	content: string;
-	status: string;
-	//status: empty / wrong / cow / bull
+  content: string;
+  status: string;
+  //status: empty / wrong / cow / bull
 }
 
 export interface IGussedLetters {
-	bull: string[];
-	cow: string[];
-	wrong: string[];
+  bull: string[];
+  cow: string[];
+  wrong: string[];
 }
 
 export interface ICheckWord {
-	winIndicator: boolean;
-	statusArray: string[];
+  winIndicator: boolean;
+  statusArray: string[];
 }
 
 export interface IUseWordle {
-	currentCell: currentCellState;
-	setCurrentCell: Function;
-	matrix: Object[];
-	refMatrix: IRefMatrix[][];
-	setRefMatrix: Function;
-	winIndicator: boolean;
-	setWinIndicator: Function;
-	setGuessedLetters: Function;
-	activeGame: boolean;
-	guessedLetters: IGussedLetters;
-	FrontCheckWord: Function;
-	setActiveGame: Function;
-	nextCell: Function;
-	prevCell: Function;
-	handleDelete: Function;
-	containsHeb: Function;
-	handleKeyDown: Function;
-	helpVisable: boolean;
-	toggleHelpVisability: Function;
-	loginVisable: boolean;
-	toggleLoginVisability: Function;
-	checkUserGuess: Function;
-	theWord: string;
-	setTheWord: Function;
+  currentCell: currentCellState;
+  setCurrentCell: Function;
+  matrix: Object[];
+  refMatrix: IRefMatrix[][];
+  setRefMatrix: Function;
+  winIndicator: boolean;
+  setWinIndicator: Function;
+  setGuessedLetters: Function;
+  activeGame: boolean;
+  guessedLetters: IGussedLetters;
+  FrontCheckWord: Function;
+  setActiveGame: Function;
+  nextCell: Function;
+  prevCell: Function;
+  handleDelete: Function;
+  containsHeb: Function;
+  handleKeyDown: Function;
+  helpVisable: boolean;
+  toggleHelpVisability: Function;
+  loginVisable: boolean;
+  toggleLoginVisability: Function;
+  checkUserGuess: Function;
+  theWord: string;
+  setTheWord: Function;
 }
 
 export function useWordle(): IUseWordle {
-	const [currentCell, setCurrentCell] = useState<currentCellState>({
-		curRow: 0,
-		curCell: 0,
-	});
+  const [currentCell, setCurrentCell] = useState<currentCellState>({
+    curRow: 0,
+    curCell: 0,
+  });
 
-	const matrix = [
-		[
-			{ content: "", status: "empty" },
-			{ content: "", status: "empty" },
-			{ content: "", status: "empty" },
-			{ content: "", status: "empty" },
-			{ content: "", status: "empty" },
-		],
-		[
-			{ content: "", status: "empty" },
-			{ content: "", status: "empty" },
-			{ content: "", status: "empty" },
-			{ content: "", status: "empty" },
-			{ content: "", status: "empty" },
-		],
-		[
-			{ content: "", status: "empty" },
-			{ content: "", status: "empty" },
-			{ content: "", status: "empty" },
-			{ content: "", status: "empty" },
-			{ content: "", status: "empty" },
-		],
-		[
-			{ content: "", status: "empty" },
-			{ content: "", status: "empty" },
-			{ content: "", status: "empty" },
-			{ content: "", status: "empty" },
-			{ content: "", status: "empty" },
-		],
-		[
-			{ content: "", status: "empty" },
-			{ content: "", status: "empty" },
-			{ content: "", status: "empty" },
-			{ content: "", status: "empty" },
-			{ content: "", status: "empty" },
-		],
-		[
-			{ content: "", status: "empty" },
-			{ content: "", status: "empty" },
-			{ content: "", status: "empty" },
-			{ content: "", status: "empty" },
-			{ content: "", status: "empty" },
-		],
-	];
+  const matrix = [
+    [
+      { content: '', status: 'empty' },
+      { content: '', status: 'empty' },
+      { content: '', status: 'empty' },
+      { content: '', status: 'empty' },
+      { content: '', status: 'empty' },
+    ],
+    [
+      { content: '', status: 'empty' },
+      { content: '', status: 'empty' },
+      { content: '', status: 'empty' },
+      { content: '', status: 'empty' },
+      { content: '', status: 'empty' },
+    ],
+    [
+      { content: '', status: 'empty' },
+      { content: '', status: 'empty' },
+      { content: '', status: 'empty' },
+      { content: '', status: 'empty' },
+      { content: '', status: 'empty' },
+    ],
+    [
+      { content: '', status: 'empty' },
+      { content: '', status: 'empty' },
+      { content: '', status: 'empty' },
+      { content: '', status: 'empty' },
+      { content: '', status: 'empty' },
+    ],
+    [
+      { content: '', status: 'empty' },
+      { content: '', status: 'empty' },
+      { content: '', status: 'empty' },
+      { content: '', status: 'empty' },
+      { content: '', status: 'empty' },
+    ],
+    [
+      { content: '', status: 'empty' },
+      { content: '', status: 'empty' },
+      { content: '', status: 'empty' },
+      { content: '', status: 'empty' },
+      { content: '', status: 'empty' },
+    ],
+  ];
 
-	const [refMatrix, setRefMatrix] = useState<IRefMatrix[][]>(matrix);
+  const [refMatrix, setRefMatrix] = useState<IRefMatrix[][]>(matrix);
 
-	const [winIndicator, setWinIndicator] = useState<boolean>(false);
+  const [winIndicator, setWinIndicator] = useState<boolean>(false);
 
-	const [activeGame, setActiveGame] = useState<boolean>(true);
+  const [activeGame, setActiveGame] = useState<boolean>(true);
 
-	const [theWord, setTheWord] = useState<string>("");
+  const [theWord, setTheWord] = useState<string>('');
 
-	const [guessedLetters, setGuessedLetters] = useState<IGussedLetters>({
-		bull: [],
-		cow: [],
-		wrong: [],
-	});
+  const [guessedLetters, setGuessedLetters] = useState<IGussedLetters>({
+    bull: [],
+    cow: [],
+    wrong: [],
+  });
 
-	const [helpVisable, setHelpVisable] = useState(false);
+  const [helpVisable, setHelpVisable] = useState(false);
 
-	function toggleHelpVisability() {
-		loginVisable && toggleLoginVisability();
-		setHelpVisable(!helpVisable);
-	}
+  function toggleHelpVisability() {
+    loginVisable && toggleLoginVisability();
+    setHelpVisable(!helpVisable);
+  }
 
-	const [loginVisable, setLoginVisable] = useState(false);
+  const [loginVisable, setLoginVisable] = useState(false);
 
-	function toggleLoginVisability() {
-		helpVisable && toggleHelpVisability();
-		setLoginVisable(!loginVisable);
-	}
+  function toggleLoginVisability() {
+    helpVisable && toggleHelpVisability();
+    setLoginVisable(!loginVisable);
+  }
 
-	function nextCell(currentCell: currentCellState): void {
-		const { curRow, curCell } = currentCell;
-		let newCurRow = curRow;
-		let newCurCell = curCell;
-		if (curCell < 4) {
-			newCurCell++;
-		} else if (curCell === 4 && curRow < 5) {
-			newCurCell = 0;
-			newCurRow++;
-		} else {
-			return;
-		}
-		setCurrentCell({ curRow: newCurRow, curCell: newCurCell });
-	}
+  function nextCell(currentCell: currentCellState): void {
+    const { curRow, curCell } = currentCell;
+    let newCurRow = curRow;
+    let newCurCell = curCell;
+    if (curCell < 4) {
+      newCurCell++;
+    } else if (curCell === 4 && curRow < 5) {
+      newCurCell = 0;
+      newCurRow++;
+    } else {
+      return;
+    }
+    setCurrentCell({ curRow: newCurRow, curCell: newCurCell });
+  }
 
-	function prevCell(currentCell: currentCellState): void {
-		const { curRow, curCell } = currentCell;
-		let newCurRow = curRow;
-		let newCurCell = curCell;
-		if (curCell > 0) {
-			newCurCell--;
-		} else if (curCell === 0 && curRow > 0) {
-			newCurCell = 4;
-			newCurRow--;
-		} else {
-			return;
-		}
-		setCurrentCell({ curRow: newCurRow, curCell: newCurCell });
-	}
+  function prevCell(currentCell: currentCellState): void {
+    const { curRow, curCell } = currentCell;
+    let newCurRow = curRow;
+    let newCurCell = curCell;
+    if (curCell > 0) {
+      newCurCell--;
+    } else if (curCell === 0 && curRow > 0) {
+      newCurCell = 4;
+      newCurRow--;
+    } else {
+      return;
+    }
+    setCurrentCell({ curRow: newCurRow, curCell: newCurCell });
+  }
 
-	function handleDelete(
-		currentCell: currentCellState,
-		refMatrix: Array<IRefMatrix[]>
-	) {
-		const { curRow, curCell } = currentCell;
-		const newMatrix = [...refMatrix];
+  function handleDelete(currentCell: currentCellState, refMatrix: Array<IRefMatrix[]>) {
+    const { curRow, curCell } = currentCell;
+    const newMatrix = [...refMatrix];
 
-		newMatrix[curRow][curCell].content = "";
-		setRefMatrix(newMatrix);
-		if (curCell !== 0 && activeGame) {
-			prevCell(currentCell);
-		}
-	}
+    newMatrix[curRow][curCell].content = '';
+    setRefMatrix(newMatrix);
+    if (curCell !== 0 && activeGame) {
+      prevCell(currentCell);
+    }
+  }
 
-	function containsHeb(str: string): boolean {
-		return /[א-ת]/.test(str);
-	}
+  function containsHeb(str: string): boolean {
+    return /[א-ת]/.test(str);
+  }
 
-	function switchFinalLetters(str: string): string {
-		let char = str.substring(str.length - 1);
-		let replaceLetter = "";
-		if ("ךםןץף".includes(char)) {
-			switch (char) {
-				case "ך":
-					replaceLetter = "כ";
-					break;
-				case "ם":
-					replaceLetter = "מ";
-					break;
-				case "ן":
-					replaceLetter = "נ";
-					break;
-				case "ף":
-					replaceLetter = "פ";
-					break;
-				case "ץ":
-					replaceLetter = "צ";
-					break;
-			}
+  function switchFinalLetters(str: string): string {
+    let char = str.substring(str.length - 1);
+    let replaceLetter = '';
+    if ('ךםןץף'.includes(char)) {
+      switch (char) {
+        case 'ך':
+          replaceLetter = 'כ';
+          break;
+        case 'ם':
+          replaceLetter = 'מ';
+          break;
+        case 'ן':
+          replaceLetter = 'נ';
+          break;
+        case 'ף':
+          replaceLetter = 'פ';
+          break;
+        case 'ץ':
+          replaceLetter = 'צ';
+          break;
+      }
 
-			const newStr = str.replace(char, replaceLetter);
-			return newStr;
-		}
-		return str;
-	}
+      const newStr = str.replace(char, replaceLetter);
+      return newStr;
+    }
+    return str;
+  }
 
-	function FrontCheckWord(
-		userGuess: string,
-		curRow: number,
-		statusArray: string[]
-	) {
-		const newMatrix = [...refMatrix];
-		const guessed = { ...guessedLetters };
+  function FrontCheckWord(userGuess: string, curRow: number, statusArray: string[]) {
+    const newMatrix = [...refMatrix];
+    const guessed = { ...guessedLetters };
 
-		const userGuessNoFinals = switchFinalLetters(userGuess);
+    const userGuessNoFinals = switchFinalLetters(userGuess);
 
-		statusArray.forEach((status, i) => {
-			newMatrix[curRow][i].status = status;
-			setRefMatrix(newMatrix);
-			if (status === "bull") {
-				guessed.bull.push(userGuessNoFinals[i]);
-			} else if (status === "cow") {
-				guessed.cow.push(userGuessNoFinals[i]);
-			} else if (status === "wrong") {
-				guessed.wrong.push(userGuessNoFinals[i]);
-			}
-			setGuessedLetters(guessed);
-		});
-	}
+    statusArray.forEach((status, i) => {
+      newMatrix[curRow][i].status = status;
+      setRefMatrix(newMatrix);
+      if (status === 'bull') {
+        guessed.bull.push(userGuessNoFinals[i]);
+      } else if (status === 'cow') {
+        guessed.cow.push(userGuessNoFinals[i]);
+      } else if (status === 'wrong') {
+        guessed.wrong.push(userGuessNoFinals[i]);
+      }
+      setGuessedLetters(guessed);
+    });
+  }
 
-	function checkUserGuess(key: string) {
-		const { curRow, curCell } = currentCell;
-		if (curCell === 4 && "כמנצפ".includes(key)) {
-			switch (key) {
-				case "כ":
-					key = "ך";
-					break;
-				case "מ":
-					key = "ם";
-					break;
-				case "נ":
-					key = "ן";
-					break;
-				case "פ":
-					key = "ף";
-					break;
-				case "צ":
-					key = "ץ";
-					break;
-			}
-		}
-		const newMatrix = [...refMatrix];
-		newMatrix[curRow][curCell].content = key;
-		setRefMatrix(newMatrix);
-		nextCell(currentCell);
+  function checkUserGuess(key: string) {
+    const { curRow, curCell } = currentCell;
+    if (curCell === 4 && 'כמנצפ'.includes(key)) {
+      switch (key) {
+        case 'כ':
+          key = 'ך';
+          break;
+        case 'מ':
+          key = 'ם';
+          break;
+        case 'נ':
+          key = 'ן';
+          break;
+        case 'פ':
+          key = 'ף';
+          break;
+        case 'צ':
+          key = 'ץ';
+          break;
+      }
+    }
+    const newMatrix = [...refMatrix];
+    newMatrix[curRow][curCell].content = key;
+    setRefMatrix(newMatrix);
+    nextCell(currentCell);
 
-		if (curCell === 4) {
-			console.log("checking user guess");
-			let userGuess = "";
-			for (let i = 0; i < 5; i++) {
-				userGuess += refMatrix[curRow][i].content;
-			}
-			let statusArray: string[] = [];
-			// checkWord(userGuess);
-			//post request to /checkWord in the server, should contain userGuess: IRefMatrix[], curRow: number, guessedLetters: IGussedLetters
-			const data = { userGuess };
+    if (curCell === 4) {
+      console.log('checking user guess');
+      let userGuess = '';
+      for (let i = 0; i < 5; i++) {
+        userGuess += refMatrix[curRow][i].content;
+      }
+      let statusArray: string[] = [];
+      // checkWord(userGuess);
+      //post request to /checkWord in the server, should contain userGuess: IRefMatrix[], curRow: number, guessedLetters: IGussedLetters
+      const data = { userGuess };
 
-			fetch("http://localhost:3001/checkWord", {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify(data),
-			})
-				.then((response) => response.json())
-				.then((responseData: ICheckWord) => {
-					setWinIndicator(responseData.winIndicator);
-					statusArray = responseData.statusArray;
-					if (responseData.winIndicator) {
-						fetch("http://localhost:3001/word")
-							.then((response) => response.text())
-							.then((word) => {
-								setTheWord(word);
-								setActiveGame(false);
-							})
-							.catch((e) => console.log(e));
-					}
-					FrontCheckWord(userGuess, curRow, statusArray);
-				})
-				.catch((error) => {
-					console.error("Error:", error);
-				});
+      fetch('http://localhost:3001/checkWord', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      })
+        .then((response) => response.json())
+        .then((responseData: ICheckWord) => {
+          setWinIndicator(responseData.winIndicator);
+          statusArray = responseData.statusArray;
+          if (responseData.winIndicator) {
+            fetch('http://localhost:3001/word')
+              .then((response) => response.text())
+              .then((word) => {
+                setTheWord(word);
+                setActiveGame(false);
+              })
+              .catch((e) => console.log(e));
+          }
+          FrontCheckWord(userGuess, curRow, statusArray);
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
 
-			return;
-		}
-	}
+      return;
+    }
+  }
 
-	function handleKeyDown(ev: KeyboardEvent<HTMLDivElement>) {
-		if (helpVisable && ev.key === "Escape") {
-			setHelpVisable(false);
-		}
-		if (activeGame) {
-			let key = ev.key;
-			const { curRow, curCell } = currentCell;
-			if (["Backspace", "Delete", "del"].includes(key)) {
-				handleDelete(currentCell, refMatrix);
-			} else if (containsHeb(key)) {
-				if (curCell === 4 && "כמנצפ".includes(key)) {
-					switch (key) {
-						case "כ":
-							key = "ך";
-							break;
-						case "מ":
-							key = "ם";
-							break;
-						case "נ":
-							key = "ן";
-							break;
-						case "פ":
-							key = "ף";
-							break;
-						case "צ":
-							key = "ץ";
-							break;
-					}
-				}
-				const newMatrix = [...refMatrix];
-				newMatrix[curRow][curCell].content = key;
-				setRefMatrix(newMatrix);
-				nextCell(currentCell);
-				if (curCell === 4) {
-					checkUserGuess(key);
-				}
-			}
-			if ((curRow === 5 && curCell === 4) || winIndicator) {
-				fetch("http://localhost:3001/word")
-					.then((response) => response.text())
-					.then((word) => {
-						setTheWord(word);
-						setActiveGame(false);
-					})
-					.catch((e) => console.log(e));
-			}
-		}
-	}
+  function handleKeyDown(ev: KeyboardEvent<HTMLDivElement>) {
+    if (helpVisable && ev.key === 'Escape') {
+      setHelpVisable(false);
+    }
+    if (activeGame) {
+      let key = ev.key;
+      const { curRow, curCell } = currentCell;
+      if (['Backspace', 'Delete', 'del'].includes(key)) {
+        handleDelete(currentCell, refMatrix);
+      } else if (containsHeb(key)) {
+        if (curCell === 4 && 'כמנצפ'.includes(key)) {
+          switch (key) {
+            case 'כ':
+              key = 'ך';
+              break;
+            case 'מ':
+              key = 'ם';
+              break;
+            case 'נ':
+              key = 'ן';
+              break;
+            case 'פ':
+              key = 'ף';
+              break;
+            case 'צ':
+              key = 'ץ';
+              break;
+          }
+        }
+        const newMatrix = [...refMatrix];
+        newMatrix[curRow][curCell].content = key;
+        setRefMatrix(newMatrix);
+        nextCell(currentCell);
+        if (curCell === 4) {
+          checkUserGuess(key);
+        }
+      }
+      if ((curRow === 5 && curCell === 4) || winIndicator) {
+        fetch('http://localhost:3001/word')
+          .then((response) => response.text())
+          .then((word) => {
+            setTheWord(word);
+            setActiveGame(false);
+          })
+          .catch((e) => console.log(e));
+      }
+    }
+  }
 
-	return {
-		currentCell,
-		setCurrentCell,
-		matrix,
-		refMatrix,
-		setRefMatrix,
-		winIndicator,
-		setWinIndicator,
-		setGuessedLetters,
-		activeGame,
-		guessedLetters,
-		FrontCheckWord,
-		setActiveGame,
-		nextCell,
-		prevCell,
-		handleDelete,
-		containsHeb,
-		handleKeyDown,
-		helpVisable,
-		toggleHelpVisability,
-		loginVisable,
-		toggleLoginVisability,
-		checkUserGuess,
-		theWord,
-		setTheWord,
-	};
+  return {
+    currentCell,
+    setCurrentCell,
+    matrix,
+    refMatrix,
+    setRefMatrix,
+    winIndicator,
+    setWinIndicator,
+    setGuessedLetters,
+    activeGame,
+    guessedLetters,
+    FrontCheckWord,
+    setActiveGame,
+    nextCell,
+    prevCell,
+    handleDelete,
+    containsHeb,
+    handleKeyDown,
+    helpVisable,
+    toggleHelpVisability,
+    loginVisable,
+    toggleLoginVisability,
+    checkUserGuess,
+    theWord,
+    setTheWord,
+  };
 }
