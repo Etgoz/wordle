@@ -1,4 +1,5 @@
 import { useState, KeyboardEvent } from 'react';
+import { SetStateAction, Dispatch } from 'react';
 
 interface currentCellState {
   curRow: number;
@@ -24,29 +25,29 @@ export interface ICheckWord {
 
 export interface IUseWordle {
   currentCell: currentCellState;
-  setCurrentCell: Function;
-  matrix: Object[];
+  setCurrentCell: Dispatch<SetStateAction<currentCellState>>;
+  matrix: IRefMatrix[][];
   refMatrix: IRefMatrix[][];
-  setRefMatrix: Function;
+  setRefMatrix: Dispatch<SetStateAction<IRefMatrix[][]>>;
   winIndicator: boolean;
-  setWinIndicator: Function;
-  setGuessedLetters: Function;
+  setWinIndicator: Dispatch<SetStateAction<boolean>>;
+  setGuessedLetters: Dispatch<SetStateAction<IGussedLetters>>;
   activeGame: boolean;
   guessedLetters: IGussedLetters;
-  FrontCheckWord: Function;
-  setActiveGame: Function;
-  nextCell: Function;
-  prevCell: Function;
-  handleDelete: Function;
-  containsHeb: Function;
-  handleKeyDown: Function;
+  FrontCheckWord: (userGuess: string, curRow: number, statusArray: string[]) => void;
+  setActiveGame: Dispatch<SetStateAction<boolean>>;
+  nextCell: (currentCell: currentCellState) => void;
+  prevCell: (currentCell: currentCellState) => void;
+  handleDelete: (currentCell: currentCellState, refMatrix: Array<IRefMatrix[]>) => void;
+  containsHeb: (str: string) => boolean;
+  handleKeyDown: (ev: KeyboardEvent<HTMLDivElement>) => void;
   helpVisable: boolean;
-  toggleHelpVisability: Function;
+  toggleHelpVisability: () => void;
   loginVisable: boolean;
-  toggleLoginVisability: Function;
-  checkUserGuess: Function;
+  toggleLoginVisability: () => void;
+  checkUserGuess: (key: string) => void;
   theWord: string;
-  setTheWord: Function;
+  setTheWord: Dispatch<SetStateAction<string>>;
 }
 
 export function useWordle(): IUseWordle {
@@ -158,7 +159,7 @@ export function useWordle(): IUseWordle {
     setCurrentCell({ curRow: newCurRow, curCell: newCurCell });
   }
 
-  function handleDelete(currentCell: currentCellState, refMatrix: Array<IRefMatrix[]>) {
+  function handleDelete(currentCell: currentCellState, refMatrix: Array<IRefMatrix[]>): void {
     const { curRow, curCell } = currentCell;
     const newMatrix = [...refMatrix];
 
@@ -174,7 +175,7 @@ export function useWordle(): IUseWordle {
   }
 
   function switchFinalLetters(str: string): string {
-    let char = str.substring(str.length - 1);
+    const char = str.substring(str.length - 1);
     let replaceLetter = '';
     if ('ךםןץף'.includes(char)) {
       switch (char) {
@@ -201,7 +202,7 @@ export function useWordle(): IUseWordle {
     return str;
   }
 
-  function FrontCheckWord(userGuess: string, curRow: number, statusArray: string[]) {
+  function FrontCheckWord(userGuess: string, curRow: number, statusArray: string[]): void {
     const newMatrix = [...refMatrix];
     const guessed = { ...guessedLetters };
 
@@ -221,7 +222,7 @@ export function useWordle(): IUseWordle {
     });
   }
 
-  function checkUserGuess(key: string) {
+  function checkUserGuess(key: string): void {
     const { curRow, curCell } = currentCell;
     if (curCell === 4 && 'כמנצפ'.includes(key)) {
       switch (key) {
@@ -256,9 +257,9 @@ export function useWordle(): IUseWordle {
       let statusArray: string[] = [];
       // checkWord(userGuess);
       //post request to /checkWord in the server, should contain userGuess: IRefMatrix[], curRow: number, guessedLetters: IGussedLetters
-      const data = { userGuess };
+      const data = { userGuess, wordNum: localStorage.getItem('wordNum') };
 
-      fetch('http://localhost:3001/checkWord', {
+      fetch(`http://localhost:3001/checkword`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
@@ -268,7 +269,7 @@ export function useWordle(): IUseWordle {
           setWinIndicator(responseData.winIndicator);
           statusArray = responseData.statusArray;
           if (responseData.winIndicator) {
-            fetch('http://localhost:3001/word')
+            fetch(`http://localhost:3001/theword/${localStorage.getItem('wordNum')}`)
               .then((response) => response.text())
               .then((word) => {
                 setTheWord(word);
@@ -286,7 +287,7 @@ export function useWordle(): IUseWordle {
     }
   }
 
-  function handleKeyDown(ev: KeyboardEvent<HTMLDivElement>) {
+  function handleKeyDown(ev: KeyboardEvent<HTMLDivElement>): void {
     if (helpVisable && ev.key === 'Escape') {
       setHelpVisable(false);
     }
@@ -324,7 +325,7 @@ export function useWordle(): IUseWordle {
         }
       }
       if ((curRow === 5 && curCell === 4) || winIndicator) {
-        fetch('http://localhost:3001/word')
+        fetch(`http://localhost:3001/theword/${localStorage.getItem('wordNum')}`)
           .then((response) => response.text())
           .then((word) => {
             setTheWord(word);

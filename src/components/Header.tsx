@@ -1,10 +1,12 @@
 import React, { useContext } from 'react';
 import { AppContext } from '../context/AppContext';
 import { AuthContext } from '../context/AuthContext';
+import { IUseAuth } from '../hooks/useAuth';
+import { IUseWordle } from '../hooks/useWordle';
 
 export function Header(): JSX.Element {
-  const { toggleHelpVisability, toggleLoginVisability } = useContext(AppContext);
-  const { userName, setUserName } = useContext(AuthContext);
+  const { toggleHelpVisability, toggleLoginVisability } = useContext(AppContext) as IUseWordle;
+  const { userName, setUserName } = useContext(AuthContext) as IUseAuth;
 
   function handleLogOut() {
     setUserName('');

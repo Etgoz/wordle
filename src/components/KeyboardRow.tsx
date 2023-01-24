@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, MouseEvent } from 'react';
 import { AppContext } from '../context/AppContext';
 import { IUseWordle } from '../hooks/useWordle';
 
@@ -6,12 +6,13 @@ export interface IKeyboardRow {
   letters: string[];
 }
 export function KeyboardRow({ letters }: IKeyboardRow): JSX.Element {
-  const { guessedLetters, activeGame, checkUserGuess, currentCell, refMatrix, setRefMatrix, nextCell, winIndicator, setActiveGame, setTheWord }: IUseWordle =
-    useContext(AppContext);
+  const { guessedLetters, activeGame, checkUserGuess, currentCell, refMatrix, setRefMatrix, nextCell, winIndicator, setActiveGame, setTheWord } = useContext(
+    AppContext
+  ) as IUseWordle;
 
-  function handleVirtualKeyboardClick(ev: any) {
+  function handleVirtualKeyboardClick(ev: MouseEvent<HTMLButtonElement>) {
     if (activeGame) {
-      let key = ev.target.innerText;
+      let key = (ev.target as HTMLElement).innerText;
       const { curRow, curCell } = currentCell;
       if (curCell === 4 && 'כמנצפ'.includes(key)) {
         switch (key) {
@@ -40,7 +41,7 @@ export function KeyboardRow({ letters }: IKeyboardRow): JSX.Element {
         checkUserGuess(key);
       }
       if ((curRow === 5 && curCell === 4) || winIndicator) {
-        fetch('http://localhost:3001/word')
+        fetch(`http://localhost:3001/theword/${localStorage.getItem('wordNum')}`)
           .then((response) => response.text())
           .then((word) => {
             setTheWord(word);

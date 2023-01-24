@@ -2,13 +2,14 @@ import React, { ChangeEvent, useContext, useRef, useState } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { useLocation, useNavigate } from 'react-router-dom';
 import '../modal.scss';
+import { IUseAuth } from '../hooks/useAuth';
 
 interface LoginFileProps {
-  toggleLoginVisability?: Function;
+  toggleLoginVisability?: () => void;
 }
 
 export function LoginFile({ toggleLoginVisability }: LoginFileProps): JSX.Element {
-  const { userName, setUserName } = useContext(AuthContext);
+  const { userName, setUserName } = useContext(AuthContext) as IUseAuth;
   const nameInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
   const location = useLocation();
@@ -19,15 +20,15 @@ export function LoginFile({ toggleLoginVisability }: LoginFileProps): JSX.Elemen
   }
 
   function handleSubmit() {
-    const curUserName = nameInputRef.current!.value;
-    setUserName(curUserName);
-    localStorage.setItem('userName', curUserName);
+    const curUserName = nameInputRef.current?.value;
+    curUserName && setUserName(curUserName);
+    localStorage.setItem('userName', curUserName || '');
     console.log(curUserName, '\n', localStorage.getItem('userName'));
     toggleLoginVisability ? toggleLoginVisability() : navigate('/');
   }
 
   function handleCancel() {
-    nameInputRef.current!.value = '';
+    nameInputRef.current?.value && '';
     toggleLoginVisability ? toggleLoginVisability() : navigate('/');
   }
 
@@ -44,7 +45,7 @@ export function LoginFile({ toggleLoginVisability }: LoginFileProps): JSX.Elemen
               שלח
             </button>
             <button className="cancelButton" type="button" name="cancel" onClick={handleCancel}>
-              {userName ? (location.pathname === '/welcome' ? 'למשחק' : 'ביטול') : 'שחק כאורח'}
+              {userName ? (location.pathname === '/welcome' ? 'למשחק' : 'ביטול') : 'אורח/ת'}
             </button>
           </div>
         </form>

@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useState, Dispatch } from 'react';
 
 export interface IUseAuth {
   userName: string;
-  setUserName: Function;
+  setUserName: Dispatch<React.SetStateAction<string>>;
 }
 
 export function useAuth(): IUseAuth {

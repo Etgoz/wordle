@@ -1,9 +1,10 @@
 import React, { useContext } from 'react';
 import { AppContext } from '../context/AppContext';
+import { IUseWordle } from '../hooks/useWordle';
 import '../modal.scss';
 
 export function HelpModal(): JSX.Element {
-  const { toggleHelpVisability } = useContext(AppContext);
+  const { toggleHelpVisability } = useContext(AppContext) as IUseWordle;
   return (
     <div className="background">
       <div className="textArea">

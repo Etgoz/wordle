@@ -1,9 +1,10 @@
 import React, { useContext } from 'react';
 import { AppContext } from '../context/AppContext';
+import { IUseWordle } from '../hooks/useWordle';
 import { KeyboardRow } from './KeyboardRow';
 
 export function Keyboard(): JSX.Element {
-  const { currentCell, refMatrix, handleDelete } = useContext(AppContext);
+  const { currentCell, refMatrix, handleDelete } = useContext(AppContext) as IUseWordle;
 
   const firstLineLetters = ['פ', 'ו', 'ט', 'א', 'ר', 'ק'];
   const secondLineLetters = ['ל', 'ח', 'י', 'ע', 'כ', 'ג', 'ד', 'ש'];

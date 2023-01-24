@@ -6,9 +6,18 @@ import { Header } from './Header';
 import { HelpModal } from './HelpModal';
 import { LoginFile } from './LoginFile';
 import { EndGameModal } from './EndGameModal';
+import { IUseWordle } from '../hooks/useWordle';
+import { useEffect } from 'react';
 
 export function WordleApp(): JSX.Element {
-  const { handleKeyDown, helpVisable, loginVisable, activeGame, toggleLoginVisability } = useContext(AppContext);
+  const { handleKeyDown, helpVisable, loginVisable, activeGame, toggleLoginVisability } = useContext(AppContext) as IUseWordle;
+
+  useEffect(() => {
+    fetch('http://localhost:3001/wordnum')
+      .then((response) => response.text())
+      .then((wordNum) => localStorage.setItem('wordNum', wordNum))
+      .catch((e) => console.log(e));
+  }, []);
 
   return (
     <>
