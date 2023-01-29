@@ -13,12 +13,13 @@ function App(): JSX.Element {
   const location = useLocation();
   const nevigate = useNavigate();
 
-  // edit it to make the welcome page behave as needed
   useEffect(() => {
     if (location.pathname === '/') {
       // Redirect to the desired page
-      !localStorage.getItem('welcomeLoaded') && nevigate('/welcome');
-      localStorage.setItem('welcomeLoaded', 'true');
+      if (!sessionStorage.getItem('welcomeLoaded')) {
+        nevigate('/welcome');
+      }
+      sessionStorage.setItem('welcomeLoaded', 'true');
     }
   }, [location.pathname, nevigate]);
 

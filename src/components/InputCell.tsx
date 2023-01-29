@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef } from 'react';
 import { AppContext } from '../context/AppContext';
 import { IUseWordle } from '../hooks/useWordle';
 
-type CellProps = {
+export type CellProps = {
   rowNumber: number;
   cellNumber: number;
 };
