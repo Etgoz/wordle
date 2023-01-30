@@ -1,12 +1,12 @@
 import { useState, KeyboardEvent } from 'react';
 import { SetStateAction, Dispatch } from 'react';
 
-interface currentCellState {
+export interface ICurrentCellState {
   curRow: number;
   curCell: number;
 }
 
-interface IRefMatrix {
+export interface IRefMatrix {
   content: string;
   status: string;
   //status: empty / wrong / cow / bull
@@ -24,8 +24,8 @@ export interface ICheckWord {
 }
 
 export interface IUseWordle {
-  currentCell: currentCellState;
-  setCurrentCell: Dispatch<SetStateAction<currentCellState>>;
+  currentCell: ICurrentCellState;
+  setCurrentCell: Dispatch<SetStateAction<ICurrentCellState>>;
   matrix: IRefMatrix[][];
   refMatrix: IRefMatrix[][];
   setRefMatrix: Dispatch<SetStateAction<IRefMatrix[][]>>;
@@ -36,9 +36,9 @@ export interface IUseWordle {
   guessedLetters: IGussedLetters;
   FrontCheckWord: (userGuess: string, curRow: number, statusArray: string[]) => void;
   setActiveGame: Dispatch<SetStateAction<boolean>>;
-  nextCell: (currentCell: currentCellState) => void;
-  prevCell: (currentCell: currentCellState) => void;
-  handleDelete: (currentCell: currentCellState, refMatrix: Array<IRefMatrix[]>) => void;
+  nextCell: (currentCell: ICurrentCellState) => void;
+  prevCell: (currentCell: ICurrentCellState) => void;
+  handleDelete: (currentCell: ICurrentCellState, refMatrix: Array<IRefMatrix[]>) => void;
   containsHeb: (str: string) => boolean;
   handleKeyDown: (ev: KeyboardEvent<HTMLDivElement>) => void;
   helpVisable: boolean;
@@ -51,7 +51,7 @@ export interface IUseWordle {
 }
 
 export function useWordle(): IUseWordle {
-  const [currentCell, setCurrentCell] = useState<currentCellState>({
+  const [currentCell, setCurrentCell] = useState<ICurrentCellState>({
     curRow: 0,
     curCell: 0,
   });
@@ -129,7 +129,7 @@ export function useWordle(): IUseWordle {
     setLoginVisable(!loginVisable);
   }
 
-  function nextCell(currentCell: currentCellState): void {
+  function nextCell(currentCell: ICurrentCellState): void {
     const { curRow, curCell } = currentCell;
     let newCurRow = curRow;
     let newCurCell = curCell;
@@ -144,7 +144,7 @@ export function useWordle(): IUseWordle {
     setCurrentCell({ curRow: newCurRow, curCell: newCurCell });
   }
 
-  function prevCell(currentCell: currentCellState): void {
+  function prevCell(currentCell: ICurrentCellState): void {
     const { curRow, curCell } = currentCell;
     let newCurRow = curRow;
     let newCurCell = curCell;
@@ -159,7 +159,7 @@ export function useWordle(): IUseWordle {
     setCurrentCell({ curRow: newCurRow, curCell: newCurCell });
   }
 
-  function handleDelete(currentCell: currentCellState, refMatrix: Array<IRefMatrix[]>): void {
+  function handleDelete(currentCell: ICurrentCellState, refMatrix: Array<IRefMatrix[]>): void {
     const { curRow, curCell } = currentCell;
     const newMatrix = [...refMatrix];
 

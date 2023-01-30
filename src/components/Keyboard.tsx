@@ -13,9 +13,6 @@ export function Keyboard(): JSX.Element {
   return (
     <>
       <div className="keyboard">
-        {/* <button type="button" id="submit">
-						שלח
-					</button> */}
         <button onClick={() => handleDelete(currentCell, refMatrix)} type="button" id="del">
           del
         </button>
