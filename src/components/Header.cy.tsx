@@ -6,8 +6,20 @@ import { IUseWordle } from '../hooks/useWordle';
 import { Header } from './Header';
 
 describe('Header without user', () => {
-  const testAuthContext = { userName: null, setUserName: (name: any) => {} };
-  const testAppContext = { toggleHelpVisability: () => {}, toggleLoginVisability: () => {} };
+  const testAuthContext = {
+    userName: null,
+    setUserName: () => {
+      return;
+    },
+  };
+  const testAppContext = {
+    toggleHelpVisability: () => {
+      return;
+    },
+    toggleLoginVisability: () => {
+      return;
+    },
+  };
   it('renders', () => {
     cy.mount(
       <AuthContext.Provider value={testAuthContext as unknown as IUseAuth}>
@@ -32,8 +44,20 @@ describe('Header without user', () => {
 });
 
 describe('Header with user', () => {
-  const testAuthContext = { userName: 'איתי', setUserName: (name: any) => {} };
-  const testAppContext = { toggleHelpVisability: false, toggleLoginVisability: false };
+  const testAuthContext = {
+    userName: 'איתי',
+    setUserName: () => {
+      return;
+    },
+  };
+  const testAppContext = {
+    toggleHelpVisability: () => {
+      return;
+    },
+    toggleLoginVisability: () => {
+      return;
+    },
+  };
   it('should say שלום איתי! and display log out button', () => {
     cy.mount(
       <AuthContext.Provider value={testAuthContext as unknown as IUseAuth}>

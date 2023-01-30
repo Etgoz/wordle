@@ -3,23 +3,23 @@ import { AppContext } from '../context/AppContext';
 import { IUseWordle } from '../hooks/useWordle';
 import { KeyboardRow } from './KeyboardRow';
 
-function checkUserGuess(key: any) {
+function checkUserGuess() {
   return;
 }
 
-function setRefMatrix(newMatrix: any) {
+function setRefMatrix() {
   return;
 }
 
-function nextCell(currentCell: any) {
+function nextCell() {
   return;
 }
 
-function setActiveGame(newGameStatus: any) {
+function setActiveGame() {
   return;
 }
 
-function setTheWord(newWord: any) {
+function setTheWord() {
   return;
 }
 
