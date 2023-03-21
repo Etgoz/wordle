@@ -11,7 +11,7 @@ export function KeyboardRow({ letters }: IKeyboardRow): JSX.Element {
     AppContext
   ) as IUseWordle;
 
-  const URL = 'http://wordleserver-production.up.railway.app';
+  const URL = 'https://wordleserver-production.up.railway.app';
   const localURL = 'http://localhost/3001';
 
   function handleVirtualKeyboardClick(ev: MouseEvent<HTMLButtonElement>) {

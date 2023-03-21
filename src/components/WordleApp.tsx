@@ -12,7 +12,7 @@ import { useEffect } from 'react';
 export function WordleApp(): JSX.Element {
   const { handleKeyDown, helpVisable, loginVisable, activeGame, toggleLoginVisability } = useContext(AppContext) as IUseWordle;
 
-  const URL = 'http://wordleserver-production.up.railway.app';
+  const URL = 'https://wordleserver-production.up.railway.app';
   const localURL = 'http://localhost/3001';
 
   useEffect(() => {
