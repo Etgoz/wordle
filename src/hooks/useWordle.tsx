@@ -117,6 +117,10 @@ export function useWordle(): IUseWordle {
 
   const [helpVisable, setHelpVisable] = useState(false);
 
+  const URL =
+    'https://railway.app/project/9a207b90-af92-4d9a-b2df-4ae78cc09f2f/service/dd47e3c0-bfd0-4950-94bd-7ce54ceed504?id=d7b88584-38d4-4dc8-9d53-e9da3f6b1d81';
+  const localURL = 'http://localhost/3001';
+
   function toggleHelpVisability() {
     loginVisable && toggleLoginVisability();
     setHelpVisable(!helpVisable);
@@ -259,7 +263,7 @@ export function useWordle(): IUseWordle {
       //post request to /checkWord in the server, should contain userGuess: IRefMatrix[], curRow: number, guessedLetters: IGussedLetters
       const data = { userGuess, wordNum: localStorage.getItem('wordNum') };
 
-      fetch(`http://localhost:3001/checkword`, {
+      fetch(`${URL}/checkword`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
@@ -269,7 +273,7 @@ export function useWordle(): IUseWordle {
           setWinIndicator(responseData.winIndicator);
           statusArray = responseData.statusArray;
           if (responseData.winIndicator) {
-            fetch(`http://localhost:3001/theword/${localStorage.getItem('wordNum')}`)
+            fetch(`${URL}/theword/${localStorage.getItem('wordNum')}`)
               .then((response) => response.text())
               .then((word) => {
                 setTheWord(word);
@@ -325,7 +329,7 @@ export function useWordle(): IUseWordle {
         }
       }
       if ((curRow === 5 && curCell === 4) || winIndicator) {
-        fetch(`http://localhost:3001/theword/${localStorage.getItem('wordNum')}`)
+        fetch(`${URL}/theword/${localStorage.getItem('wordNum')}`)
           .then((response) => response.text())
           .then((word) => {
             setTheWord(word);

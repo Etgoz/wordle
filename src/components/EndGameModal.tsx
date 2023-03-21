@@ -8,13 +8,17 @@ export function EndGameModal(): JSX.Element {
     AppContext
   ) as IUseWordle;
 
+  const URL =
+    'https://railway.app/project/9a207b90-af92-4d9a-b2df-4ae78cc09f2f/service/dd47e3c0-bfd0-4950-94bd-7ce54ceed504?id=d7b88584-38d4-4dc8-9d53-e9da3f6b1d81';
+  const localURL = 'http://localhost/3001';
+
   function handleNewGame() {
     winIndicator && setWinIndicator(false);
     setRefMatrix(matrix);
     setCurrentCell({ curRow: 0, curCell: 0 });
     setGuessedLetters({ bull: [], cow: [], wrong: [] });
     setActiveGame(true);
-    fetch('http://localhost:3001/wordnum')
+    fetch(`${URL}/wordnum`)
       .then((response) => response.text())
       .then((wordNum) => localStorage.setItem('wordNum', wordNum))
       .catch((e) => console.log(e));

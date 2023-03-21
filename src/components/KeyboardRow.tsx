@@ -5,10 +5,15 @@ import { IUseWordle } from '../hooks/useWordle';
 export interface IKeyboardRow {
   letters: string[];
 }
+
 export function KeyboardRow({ letters }: IKeyboardRow): JSX.Element {
   const { guessedLetters, activeGame, checkUserGuess, currentCell, refMatrix, setRefMatrix, nextCell, winIndicator, setActiveGame, setTheWord } = useContext(
     AppContext
   ) as IUseWordle;
+
+  const URL =
+    'https://railway.app/project/9a207b90-af92-4d9a-b2df-4ae78cc09f2f/service/dd47e3c0-bfd0-4950-94bd-7ce54ceed504?id=d7b88584-38d4-4dc8-9d53-e9da3f6b1d81';
+  const localURL = 'http://localhost/3001';
 
   function handleVirtualKeyboardClick(ev: MouseEvent<HTMLButtonElement>) {
     if (activeGame) {
@@ -41,7 +46,7 @@ export function KeyboardRow({ letters }: IKeyboardRow): JSX.Element {
         checkUserGuess(key);
       }
       if ((curRow === 5 && curCell === 4) || winIndicator) {
-        fetch(`http://localhost:3001/theword/${localStorage.getItem('wordNum')}`)
+        fetch(`${URL}/theword/${localStorage.getItem('wordNum')}`)
           .then((response) => response.text())
           .then((word) => {
             setTheWord(word);
