@@ -13,7 +13,7 @@ export function WordleApp(): JSX.Element {
   const { handleKeyDown, helpVisable, loginVisable, activeGame, toggleLoginVisability } = useContext(AppContext) as IUseWordle;
 
   const URL = 'https://wordleserver-production.up.railway.app';
-  const localURL = 'http://localhost/3001';
+  // const localURL = 'http://localhost/3001';
 
   useEffect(() => {
     fetch(`${URL}/wordnum`)

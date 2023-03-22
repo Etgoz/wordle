@@ -12,7 +12,7 @@ export function KeyboardRow({ letters }: IKeyboardRow): JSX.Element {
   ) as IUseWordle;
 
   const URL = 'https://wordleserver-production.up.railway.app';
-  const localURL = 'http://localhost/3001';
+  // const localURL = 'http://localhost/3001';
 
   function handleVirtualKeyboardClick(ev: MouseEvent<HTMLButtonElement>) {
     if (activeGame) {

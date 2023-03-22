@@ -9,7 +9,7 @@ export function EndGameModal(): JSX.Element {
   ) as IUseWordle;
 
   const URL = 'https://wordleserver-production.up.railway.app';
-  const localURL = 'http://localhost/3001';
+  // const localURL = 'http://localhost/3001';
 
   function handleNewGame() {
     winIndicator && setWinIndicator(false);

@@ -118,7 +118,7 @@ export function useWordle(): IUseWordle {
   const [helpVisable, setHelpVisable] = useState(false);
 
   const URL = 'https://wordleserver-production.up.railway.app';
-  const localURL = 'http://localhost/3001';
+  // const localURL = 'http://localhost/3001';
 
   function toggleHelpVisability() {
     loginVisable && toggleLoginVisability();
