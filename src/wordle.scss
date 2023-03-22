@@ -166,4 +166,30 @@ header {
 
 .welcome {
   direction: ltr;
+  grid-column: 2;
+}
+
+@media screen and (max-width: 983px) {
+  header {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+}
+
+@media screen and (max-width: 424px) {
+  .keyboard {
+    @include center;
+    gap: 0.4rem;
+
+    button {
+      @include center;
+      height: 1.2em;
+      width: 1.2em;
+      border: 2.3px solid grey;
+      border-radius: 8px;
+      font-size: 2rem;
+      transition: background-color 0.5s ease-in-out;
+    }
+  }
 }

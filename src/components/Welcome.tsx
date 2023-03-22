@@ -11,9 +11,7 @@ export function Welcome(): JSX.Element {
   return (
     <AuthContext.Provider value={appAuth}>
       <header>
-        <h1 className="welcome" style={{ gridColumn: 2 }}>
-          Welcome {curUserName ? curUserName : 'User'}
-        </h1>
+        <h1 className="welcome">Welcome {curUserName ? curUserName : 'User'}</h1>
       </header>
       <LoginFile />
     </AuthContext.Provider>
